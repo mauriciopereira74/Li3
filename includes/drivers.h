@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <stdbool.h>
+#include "users.h"
 
 /**
  * @brief Types of Car Classes.
@@ -23,7 +24,7 @@ typedef struct
 
     char* name, /**< string that represents the name of the driver. */
           city, /**< string that represents the city of the driver. */
-          account_status; /**< string to check the driver account status. */
+          Acc_Status; /**< string to check the driver account status. */
 
     struct tm birth_date ; /**< struct that represents the driver's date of birth. */
 

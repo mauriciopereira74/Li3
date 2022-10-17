@@ -4,6 +4,12 @@
 #include <time.h>
 #include <stdbool.h>
 
+/**
+ * @brief Types of Account Statu.
+ */
+
+enum Acc_Status { Active,
+                  Inactive };
 
 /**
  * @brief Types of User elements.
@@ -16,7 +22,7 @@ typedef struct
 
     char gender; /**< char that represents the gender of the user. */
 
-    char* account_status; /**< string to check the user account status. */
+    char* Acc_Status; /**< string to check the user account status. */
 
     struct tm created_time; /**< struct that represents the datetime on which the user account was created. */
 
