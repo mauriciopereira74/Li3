@@ -3,33 +3,31 @@
 
 #include <time.h>
 #include <stdbool.h>
-#include "drivers.h"
-#include "users.h"
+#include "drivers.h" // not needed i think
+#include "users.h" // not needed i think
 
 
 /**
  * @brief Types of User elements.
  */
-typedef struct
+typedef struct ride
 {
-    long int id; /**< long int that represents the id number of a ride. */
+    long int id,         /**< long int that represents the id number of a ride. */
+             driver_id;  /**< Driver of the ride. */
+             
 
-    struct tm birth_date ; /**< struct that represents the ride's date. */
+    struct tm date;     /**< struct that represents the ride's date. */
 
-    Driver driver; /**< Driver of the ride. */
+    char *city,          /**< string that represents the city of the ride. */
+      *comment,          /**< string that represents the comment that was given to the driver/ride. */
+      *user_username;        /**< User of the ride. */
+    float tip;           /**< float that represents the tip that was given to the driver. */
 
-    User user ; /**< User of the ride. */
-
-    char* city, /**< string that represents the city of the ride. */
-          comment; /**< string that represents the comment that was given to the driver/ride. */
-
-    float distance, /**< float that represents the distance of the ride. */
-          tip; /**< float that represents the tip that was given to the driver. */
-
-    int score_user, /**< int that represents the score of the user. */
-        score_driver; /**< int that represents the score of the driver. */
+    int score_user,      /**< int that represents the score of the user. */
+        distance,      /**< float that represents the distance of the ride. */
+        score_driver;    /**< int that represents the score of the driver. */
  
-} Ride;
+} *Ride;
 
 
 #endif
