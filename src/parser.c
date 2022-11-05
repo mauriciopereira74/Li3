@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <glib.h>
 
 
@@ -189,8 +190,8 @@ void parser(char* line){
         g_hash_table_insert(users_table,temp->username,temp);
         g_hash_table_insert(users_table,temp->name,temp);
         g_hash_table_insert(users_table,temp->gender,temp);
-        g_hash_table_insert(users_table,temp->birth_date,temp);
-        g_hash_table_insert(users_table,temp->created_time,temp);
+        g_hash_table_insert(users_table,mktime(&(temp->birth_date)),temp);
+        g_hash_table_insert(users_table,mktime(&(temp->created_time)),temp);
         g_hash_table_insert(users_table,temp->pay_method,temp);
         g_hash_table_insert(users_table,temp->Acc_Status,temp);
         free(temp);
@@ -212,12 +213,12 @@ void parser(char* line){
         Driver temp = malloc(sizeof(parse_users(line)));
         g_hash_table_insert(drivers_table,temp->id,temp);
         g_hash_table_insert(drivers_table,temp->name,temp);
-        g_hash_table_insert(drivers_table,temp->birth_date,temp);
+        g_hash_table_insert(drivers_table,mktime(&(temp->birth_date)),temp);
         g_hash_table_insert(drivers_table,temp->gender,temp);
         g_hash_table_insert(drivers_table,temp->Class,temp);
         g_hash_table_insert(drivers_table,temp->license_plate,temp);
         g_hash_table_insert(drivers_table,temp->city,temp);
-        g_hash_table_insert(drivers_table,temp->created_time,temp);
+        g_hash_table_insert(drivers_table,mktime(&(temp->created_time)),temp);
         g_hash_table_insert(drivers_table,temp->Acc_Status,temp);
         free(temp);
 
@@ -235,14 +236,14 @@ void parser(char* line){
         
         Ride temp = malloc(sizeof(parse_users(line))); //parse_rides(line); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         g_hash_table_insert(rides_table,temp->id,temp);
-        g_hash_table_insert(rides_table,temp->date,temp);
-        //g_hash_table_insert(rides_table,temp->driver_id,temp);
-        //g_hash_table_insert(rides_table,temp->user_username,temp);
+        g_hash_table_insert(rides_table,mktime(&(temp->date)),temp);
+        g_hash_table_insert(rides_table,temp->driver_id,temp);
+        g_hash_table_insert(rides_table,temp->user_username,temp);
         g_hash_table_insert(rides_table,temp->city,temp);
         g_hash_table_insert(rides_table,temp->distance,temp);
         g_hash_table_insert(rides_table,temp->score_user,temp);
         g_hash_table_insert(rides_table,temp->score_driver,temp);
-        g_hash_table_insert(rides_table,temp->tip,temp);
+        g_hash_table_insert(rides_table,(int)temp->tip,temp);
         g_hash_table_insert(rides_table,temp->comment,temp);
         free(temp);
 
