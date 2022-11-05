@@ -113,6 +113,7 @@ Driver parse_drivers (char* line){
     d->created_time     = date_parse(strdup(strsep(&line,FILE_CSV_DELIM)));
     d->Acc_Status       = strdup(strsep(&line,FILE_CSV_DELIM));
     
+    
     debugDriver(d);
 
     return d;
