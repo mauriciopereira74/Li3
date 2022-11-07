@@ -1,11 +1,13 @@
 #include "../includes/drivers.h"
 #include "../includes/users.h"
+#include "../includes/hashtables.h"
 #include "../includes/rides.h"
 #include "../includes/parser.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include <glib.h>
 
 
@@ -183,12 +185,10 @@ void parser(char* line){
     FILE* users_data = fopen("./entrada/users.csv","r");
     fgets(line,LINE_SIZE,users_data);
 
-    GHashTable *users_table=g_hash_table_new(g_direct_hash, g_direct_equal);
-
     while(fgets(line,LINE_SIZE,users_data)){
 
         User temp= malloc(sizeof(parse_users(line))); // a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        g_hash_table_insert(users_table,temp->username,temp);
+        user_insert(temp);
         free(temp);
     }
 
@@ -200,13 +200,11 @@ void parser(char* line){
     FILE* drivers_data = fopen("./entrada/drivers.csv","r");
     fgets(line,LINE_SIZE,drivers_data);
 
-    GHashTable *drivers_table=g_hash_table_new(g_direct_hash, g_direct_equal);
-
     while(fgets(line,LINE_SIZE,drivers_data)){
 
         //parse_drivers(line); // a funçao retorna cada struct Driver criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         Driver temp = malloc(sizeof(parse_users(line)));
-        g_hash_table_insert(drivers_table,temp->id,temp);
+        driver_insert(temp);
         free(temp);
 
     }
@@ -217,12 +215,11 @@ void parser(char* line){
     FILE* rides_data = fopen("./entrada/rides.csv","r");
     fgets(line,LINE_SIZE,drivers_data);
 
-    GHashTable *rides_table=g_hash_table_new(g_direct_hash, g_direct_equal);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
         
         Ride temp = malloc(sizeof(parse_users(line))); //parse_rides(line); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        g_hash_table_insert(rides_table,temp->id,temp);
+        ride_insert(temp);
         free(temp);
 
     }
