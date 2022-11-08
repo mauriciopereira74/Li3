@@ -185,10 +185,12 @@ void parser(char* line){
     FILE* users_data = fopen("./entrada/users.csv","r");
     fgets(line,LINE_SIZE,users_data);
 
+    GHashTable *users_table= g_hash_table_new(g_str_hash, g_str_equal);
+
     while(fgets(line,LINE_SIZE,users_data)){
 
         User temp= malloc(sizeof(parse_users(line))); // a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        user_insert(temp);
+        user_insert(users_table,temp);
         free(temp);
     }
 
@@ -199,12 +201,14 @@ void parser(char* line){
     
     FILE* drivers_data = fopen("./entrada/drivers.csv","r");
     fgets(line,LINE_SIZE,drivers_data);
+    
+    GHashTable *drivers_table= g_hash_table_new(g_str_hash, g_str_equal);
 
     while(fgets(line,LINE_SIZE,drivers_data)){
 
         //parse_drivers(line); // a funçao retorna cada struct Driver criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         Driver temp = malloc(sizeof(parse_users(line)));
-        driver_insert(temp);
+        driver_insert(drivers_table,temp);
         free(temp);
 
     }
@@ -215,11 +219,12 @@ void parser(char* line){
     FILE* rides_data = fopen("./entrada/rides.csv","r");
     fgets(line,LINE_SIZE,drivers_data);
 
+    GHashTable *rides_table= g_hash_table_new(g_str_hash, g_str_equal);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
         
         Ride temp = malloc(sizeof(parse_users(line))); //parse_rides(line); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        ride_insert(temp);
+        ride_insert(rides_table,temp);
         free(temp);
 
     }

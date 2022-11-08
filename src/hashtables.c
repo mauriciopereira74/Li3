@@ -7,33 +7,28 @@
 #include <glib.h>
 
 
-GHashTable *users_table= g_hash_table_new(g_int_hash, g_int_equal);
 
-GHashTable *drivers_table= g_hash_table_new(g_int_hash, g_int_equal);
-
-GHashTable *rides_table= g_hash_table_new(g_int_hash, g_int_equal);
-
-void user_insert(User user){
-    g_hash_table_insert(users_table,user->name,user);
+void user_insert(GHashTable *users_table, User user){
+    g_hash_table_insert(users_table,user->username,user);
 }
 
-void driver_insert(Driver driver){
+void driver_insert(GHashTable *drivers_table,Driver driver){
     g_hash_table_insert(drivers_table,driver->id,driver);
 }
 
-void ride_insert(Ride ride){
+void ride_insert(GHashTable *rides_table,Ride ride){
     g_hash_table_insert(rides_table,ride->id,ride);
 }
 
-bool user_check(char *name){
+bool user_check(GHashTable *users_table,char *name){
     return (g_hash_table_contains(users_table,name));
 }
 
-bool driver_check(long int id){
+bool driver_check(GHashTable *drivers_table,long int id){
     return (g_hash_table_contains(drivers_table,id));
 }
 
-bool ride_check(long int id){
+bool ride_check(GHashTable *rides_table,long int id){
     return (g_hash_table_contains(rides_table,id));
 }
 
