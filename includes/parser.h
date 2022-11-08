@@ -8,9 +8,9 @@
 void debugUser(User u);
 struct tm date_parse(char* line);
 int accStatus_parse(char* line);
-Driver parse_drivers(char* line);
-Ride parse_rides(char* line);
-User parse_users(char* line);
+void parse_drivers(char* line, Driver d);
+void parse_rides(char* line,Ride r);
+void parse_users(char* line,User u);
 void deleteFirstLine(char* buffer,char* filepath,char* flag);
 void parser(char* line);
 
