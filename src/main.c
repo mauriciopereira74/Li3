@@ -12,8 +12,8 @@
 
 int main(){
     users_table = g_hash_table_new(g_str_hash, g_str_equal);
-    drivers_table= g_hash_table_new(g_str_hash, g_str_equal);
-    rides_table= g_hash_table_new(g_str_hash, g_str_equal); 
+    drivers_table= g_hash_table_new(g_int_hash, g_int_equal);
+    rides_table= g_hash_table_new(g_int_hash, g_int_equal); 
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
     parser(line);

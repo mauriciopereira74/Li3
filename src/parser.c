@@ -91,7 +91,7 @@ int accStatus_parse(char* line){
         status = 0;
     }
     else{status = 1;}
-return 0;
+return status;
 }
 
 
@@ -138,7 +138,6 @@ void parse_rides (char* line, Ride r){
     r->tip              = atof(strdup(strsep(&line,FILE_CSV_DELIM)));
     r->comment          = strdup(strsep(&line,FILE_CSV_DELIM));
 
-    return r;
 }
 
 
@@ -182,7 +181,6 @@ void parser(char* line){
     
     fclose(users_data);
     free(line);
-    printf("ardeu\n");
     line = malloc(sizeof(char) * LINE_SIZE);
     
     FILE* drivers_data = fopen("../entrada/drivers.csv","r");
@@ -194,15 +192,13 @@ void parser(char* line){
         Driver temp_driver = malloc(sizeof(struct driver));
         // a funçao retorna cada struct Driver criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         parse_drivers(line,temp_driver);
-        printf("ardeu\n");
         driver_insert(temp_driver);
-        printf("ardeu\n");
         free(temp_driver);
 
     }
     free(line);
     fclose(drivers_data);
-    /*
+
     line = malloc(sizeof(char) * LINE_SIZE);
     
     FILE* rides_data = fopen("../entrada/rides.csv","r");
@@ -217,7 +213,5 @@ void parser(char* line){
     }
     free(line);
     fclose(rides_data);
-    */
-    printf("FUNCIONA CARALHO\n");
 }
 

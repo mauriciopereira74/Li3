@@ -12,6 +12,6 @@ void user_insert( User user);
 void driver_insert(Driver driver);
 void ride_insert(Ride ride);
 
-bool user_check(char *name);
-bool driver_check(long int id);
-bool ride_check(long int id);
+int user_check(char *name);
+int driver_check(long int id);
+int ride_check(long int id);

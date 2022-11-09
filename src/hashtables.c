@@ -8,28 +8,31 @@
 
 void user_insert(User user){
     
-    g_hash_table_insert(users_table,user->name,user);
+    g_hash_table_add(users_table,user->name);
     
 }
 
 void driver_insert(Driver driver){
-    g_hash_table_insert(drivers_table,driver->id,driver);
+    g_hash_table_add(drivers_table,&driver->id);
 }
 
 void ride_insert(Ride ride){
-    g_hash_table_insert(rides_table,ride->id,ride);
+    g_hash_table_add(rides_table,&ride->id);
 }
 
-bool user_check(char *name){
-    return (g_hash_table_contains(users_table,&name));
+int user_check(char *name){
+    if (g_hash_table_lookup(users_table, name)) return 1;
+    else return 0;
 }
 
-bool driver_check(long int id){
-    return (g_hash_table_contains(drivers_table,&id));
+int driver_check(long int &id){
+    if (g_hash_table_lookup(drivers_table,id)) return 1;
+    else return 0;
 }
 
-bool ride_check(long int id){
-    return (g_hash_table_contains(rides_table,&id));
+int ride_check(long int id){
+    if (g_hash_table_lookup(rides_table, &id)) return 1;
+    else return 0;
 }
 
 
