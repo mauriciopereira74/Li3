@@ -13,9 +13,9 @@
 
 void debugRide(Ride r){
 
-    printf("ID: %ld; ",r->id);
+    printf("ID: %s; ",r->id);
     printf("Date: %d/%d/%d; ",r->date.tm_mday,r->date.tm_mon,r->date.tm_year);
-    printf("Driver: %ld; ",r->driver_id);
+    printf("Driver: %s; ",r->driver_id);
     printf("User: %s; ",r->user_username);
     printf("City: %s; ",r->city);
     printf("Distance: %d; ",r->distance);
@@ -28,7 +28,7 @@ void debugRide(Ride r){
 
 void debugDriver(Driver d){
      
-    printf("ID: %ld; ",d->id);
+    printf("ID: %s; ",d->id);
     printf("Name: %s; ",d->name);
     printf("Birth Date: %d/%d/%d; ",d->birth_date.tm_mday,d->birth_date.tm_mon,d->birth_date.tm_year);
     printf("Gender: %s; ",d->gender);
@@ -104,7 +104,7 @@ return status;
  */
 
 void parse_drivers (char* line, Driver d){
-    d->id               = atol(strdup(strsep(&line,FILE_CSV_DELIM)));
+    d->id               = strdup(strsep(&line,FILE_CSV_DELIM));
     d->name             = strdup(strsep(&line,FILE_CSV_DELIM));
     d->birth_date       = date_parse(strdup(strsep(&line,FILE_CSV_DELIM)));
     d->gender           = strdup(strsep(&line,FILE_CSV_DELIM));
@@ -127,9 +127,9 @@ void parse_drivers (char* line, Driver d){
 
 void parse_rides (char* line, Ride r){
 
-    r->id               = atol(strdup(strsep(&line,FILE_CSV_DELIM)));
+    r->id               = strdup(strsep(&line,FILE_CSV_DELIM));
     r->date             = date_parse(strdup(strsep(&line,FILE_CSV_DELIM)));
-    r->driver_id        = atol(strdup(strsep(&line,FILE_CSV_DELIM)));
+    r->driver_id        = strdup(strsep(&line,FILE_CSV_DELIM));
     r->user_username    = strdup(strsep(&line,FILE_CSV_DELIM));
     r->city             = strdup(strsep(&line,FILE_CSV_DELIM));
     r->distance         = atoi(strdup(strsep(&line,FILE_CSV_DELIM))); // could be int instead of float

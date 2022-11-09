@@ -12,9 +12,9 @@
  */
 typedef struct ride
 {
-    long int id,         /**< long int that represents the id number of a ride. */
-             driver_id;  /**< Driver of the ride. */
-             
+    
+    char *id,        /**< string that represents the id number of a ride. */
+         *driver_id; /**< Driver of the ride. */
 
     struct tm date;     /**< struct that represents the ride's date. */
 

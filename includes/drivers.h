@@ -18,7 +18,7 @@ enum Class { Basic,
  */
 typedef struct driver
 {
-    long int id; /**< long int that represents the id number of a driver. */
+    char *id; /**< string that represents the id number of a driver. */
 
     char *license_plate; /**< long int that represents the license plate number of the driver. */
 
