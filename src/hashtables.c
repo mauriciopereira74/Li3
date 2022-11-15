@@ -4,20 +4,19 @@
 #include "../includes/parser.h"
 #include "../includes/hashtables.h"
 
+#include <stdio.h>
 #include <glib.h>
 
 void user_insert(User user){
-    
-    g_hash_table_add(users_table,user->name);
-    
+    g_hash_table_insert(users_table,user->username,clone_user(user));
 }
 
 void driver_insert(Driver driver){
-    g_hash_table_add(drivers_table,driver->id);
+    g_hash_table_insert(drivers_table,driver->id,clone_driver(driver));
 }
 
 void ride_insert(Ride ride){
-    g_hash_table_add(rides_table,ride->id);
+    g_hash_table_insert(rides_table,ride->id,ride);
 }
 
 int user_check(char *name){

@@ -161,6 +161,22 @@ void parse_users(char* line,User u){
 
 }
 
+User clone_user(User u){
+    User aux = malloc(sizeof(struct user));
+    memcpy(aux,u,sizeof(struct user));
+    return aux;
+}
+Driver clone_driver(Driver d){
+    Driver aux = malloc(sizeof(struct driver));
+    memcpy(aux,d,sizeof(struct driver));
+    return aux;
+}
+
+Ride clone_ride(Ride r){
+    Ride aux=malloc(sizeof(struct ride));
+    memcpy(aux,r,sizeof(struct ride));
+    return aux;
+}
 
 /**
  * @brief Função que realiza o parsing de todos os ficheiros .csv.
