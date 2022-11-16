@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include <glib.h>
 
+GHashTable *users_table;
+GHashTable *drivers_table;
+GHashTable *rides_table;
+
 void user_insert(User user){
     g_hash_table_insert(users_table,user->username,clone_user(user));
 }
@@ -16,7 +20,7 @@ void driver_insert(Driver driver){
 }
 
 void ride_insert(Ride ride){
-    g_hash_table_insert(rides_table,ride->id,ride);
+    g_hash_table_insert(rides_table,ride->id,clone_ride(ride));
 }
 
 int user_check(char *name){
