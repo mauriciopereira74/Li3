@@ -45,7 +45,18 @@ int age(struct tm birth_date){
 
 void profileU(char id[20]){
    struct user *u = g_hash_table_lookup(users_table,id);
+   long int i= 000000000001;
+   int avaliacao_total=0;
+   int n_viagens=0;
+   //for(;i<000001000000;i++){
+      //struct ride *r= g_hash_table_lookup(rides_table,i);
+      //if(strcmp(r->user_username,id)){
+         //avaliacao_total= avaliacao_total + r->score_user;
+       //  n_viagens++;
+     // }    
+   //}
    printf("%s;%s;%i\n",u->name,u->gender,age(u->birth_date));
+
 }
 
 void profileD(char id[20]){

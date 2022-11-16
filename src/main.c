@@ -25,11 +25,7 @@ int main(){
     parser(line);
     //line = malloc(sizeof(char) * LINE_SIZE);
 
-    int querie; char identifier[20];
-    scanf("%i%s",&querie,identifier);
-
-    if(g_hash_table_contains(users_table,identifier) && querie==1) profileU(identifier);
-    else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
+    //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
     
     command_interpreter(line);
     return 0;
