@@ -4,6 +4,10 @@
 
 #include <glib.h>
 
+GHashTable *users_table;
+GHashTable *drivers_table;
+GHashTable *rides_table;
+
 void user_insert( User user);
 void driver_insert(Driver driver);
 void ride_insert(Ride ride);

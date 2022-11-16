@@ -4,6 +4,8 @@
 #include "../includes/parser.h"
 #include "../includes/interpreter.h"
 #include "../includes/hashtables.h"
+#include "../includes/profile.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,13 +24,13 @@ int main(){
     char* line = malloc(sizeof(char) * LINE_SIZE);
     parser(line);
     //line = malloc(sizeof(char) * LINE_SIZE);
-    int u,d,r;
 
-    u = g_hash_table_size(users_table);
-    d = g_hash_table_size(drivers_table);
-    r = g_hash_table_size(rides_table);
+    int querie; char identifier[20];
+    scanf("%i%s",&querie,identifier);
 
-    printf("Users -> %d\nDrivers -> %d\nRides -> %d\n",u,d,r);
+    if(g_hash_table_contains(users_table,identifier) && querie==1) profileU(identifier);
+    else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
+    
     command_interpreter(line);
     return 0;
 }
