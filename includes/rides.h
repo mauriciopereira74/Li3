@@ -13,8 +13,8 @@
 typedef struct ride
 {
     
-    char *id,        /**< string that represents the id number of a ride. */
-         *driver_id; /**< Driver of the ride. */
+    int id,        /**< string that represents the id number of a ride. */
+        driver_id; /**< Driver of the ride. */
 
     struct tm date;     /**< struct that represents the ride's date. */
 

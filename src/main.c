@@ -18,15 +18,14 @@
 
 int main(){
     users_table = g_hash_table_new(g_str_hash, g_str_equal);
-    drivers_table= g_hash_table_new(g_str_hash, g_str_equal);
-    rides_table= g_hash_table_new(g_str_hash, g_str_equal); 
+    drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
+    rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
     parser(line);
     //line = malloc(sizeof(char) * LINE_SIZE);
 
     //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
-    
     command_interpreter(line);
     return 0;
 }

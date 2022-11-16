@@ -16,11 +16,11 @@ void user_insert(User user){
 }
 
 void driver_insert(Driver driver){
-    g_hash_table_insert(drivers_table,driver->id,clone_driver(driver));
+    g_hash_table_insert(drivers_table,GINT_TO_POINTER(driver->id),clone_driver(driver));
 }
 
 void ride_insert(Ride ride){
-    g_hash_table_insert(rides_table,ride->id,clone_ride(ride));
+    g_hash_table_insert(rides_table,GINT_TO_POINTER(ride->id),clone_ride(ride));
 }
 
 int user_check(char *name){

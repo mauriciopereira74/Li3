@@ -4,5 +4,5 @@
 #include "../includes/parser.h"
 #include "../includes/interpreter.h"
 
-void profileU(char id[20]);
-void profileD(char id[20]);
+void profileU(char *id);
+void profileD(char *id);

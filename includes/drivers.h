@@ -9,16 +9,16 @@
  * @brief Types of Car Classes.
  */
 
-enum Class { Basic,
-             Green,
-             Premium };
+enum Class { basic,
+             green,
+             premium };
 
 /**
  * @brief Types of Driver elements.
  */
 typedef struct driver
 {
-    char *id; /**< string that represents the id number of a driver. */
+    int id; /**< string that represents the id number of a driver. */
 
     char *license_plate; /**< long int that represents the license plate number of the driver. */
 
