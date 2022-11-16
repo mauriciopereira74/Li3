@@ -10,17 +10,25 @@
 #include <string.h>
 #include <time.h>
  
+ extern GHashTable* users_table;
+ extern GHashTable* drivers_table;
+ extern GHashTable* rides_table;
 
 int main(){
-    users_table = g_hash_table_new(g_int_hash, g_int_equal);
-    drivers_table= g_hash_table_new(g_int_hash, g_int_equal);
-    rides_table= g_hash_table_new(g_int_hash, g_int_equal); 
+    users_table = g_hash_table_new(g_str_hash, g_str_equal);
+    drivers_table= g_hash_table_new(g_str_hash, g_str_equal);
+    rides_table= g_hash_table_new(g_str_hash, g_str_equal); 
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
     parser(line);
-    struct user *u = g_hash_table_lookup(users_table,"MiTeixeira");
-    printf("%s\n",u->pay_method);
-    struct driver *d = g_hash_table_lookup(drivers_table,"000000000001");
-    printf("%s\n",d->name);
+    //line = malloc(sizeof(char) * LINE_SIZE);
+    int u,d,r;
+
+    u = g_hash_table_size(users_table);
+    d = g_hash_table_size(drivers_table);
+    r = g_hash_table_size(rides_table);
+
+    printf("Users -> %d\nDrivers -> %d\nRides -> %d\n",u,d,r);
+    command_interpreter(line);
     return 0;
 }
