@@ -14,6 +14,7 @@ void parse_users(char* line,User u);
 void deleteFirstLine(char* buffer,char* filepath,char* flag);
 User clone_user(User u);
 Driver clone_driver(Driver d);
+Ride clone_ride(Ride r);
 void parser(char* line);
 
 #endif
