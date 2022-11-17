@@ -7,6 +7,7 @@
 #include "../includes/parser.h"
 #include "../includes/interpreter.h"
 #include "../includes/profile.h"
+#include "../includes/rideAvrCity.h"
 #include "../includes/nAVR.h"
 #include "../includes/hashtables.h"
 
@@ -62,6 +63,7 @@ void command_interpreter(char* line){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
+            precoMedioViagens_cidade(input);
             
         }
         if(atoi(querie_id) == 5){

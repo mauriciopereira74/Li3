@@ -1,0 +1,1 @@
+int precoMedioViagens_cidade(char* city);
