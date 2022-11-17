@@ -45,8 +45,8 @@ int age(struct tm birth_date){
 
 void profileU(char *id){
    struct user *u = g_hash_table_lookup(users_table,id);
-   int avaliacao_total=0; int avaliacao_media=0; int n_viagens=0;
-   double total_custo=0;
+   int avaliacao_total=0; int n_viagens=0;
+   double total_custo=0, avaliacao_media=0;
 
    long int i= 000000000001;
    for(;i<=1000000;i++){
@@ -61,7 +61,7 @@ void profileU(char *id){
       }   
    }
    avaliacao_media=avaliacao_total/n_viagens;
-   printf("%s;%s;%d;%d;%d;%f\n",u->name,u->gender,age(u->birth_date),avaliacao_media,n_viagens,total_custo);
+   printf("%s;%s;%d;%f;%d;%f\n",u->name,u->gender,age(u->birth_date),avaliacao_media,n_viagens,total_custo);
 
 }
 
@@ -70,8 +70,8 @@ void profileD(char *id_r){
    long int id= atoi(id_r);
    struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
 
-   int avaliacao_total=0; int avaliacao_media=0; int n_viagens=0; int distancia=0;
-   double total_auferido=0;
+   int avaliacao_total=0; int n_viagens=0; int distancia=0;
+   double total_auferido=0, avaliacao_media=0;
 
    long int i= 1;
    for(;i<=1000000;i++){
@@ -88,5 +88,5 @@ void profileD(char *id_r){
       else if(strcmp(d->Class,"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
          else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
-   printf("%s;%s;%d;%d;%d;%f\n",d->name,d->gender,age(d->birth_date),avaliacao_media,n_viagens,total_auferido);
+   printf("%s;%s;%d;%f;%d;%f\n",d->name,d->gender,age(d->birth_date),avaliacao_media,n_viagens,total_auferido);
 }
