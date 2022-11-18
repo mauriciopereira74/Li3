@@ -10,7 +10,7 @@
 #include "../includes/profile.h"
 #include "../includes/hashtables.h"
 
-
+/*
 void nDrivers(int n){
     int n_viagens=0; int avaliacao_total=0;
     double avaliacao_media=0;
@@ -33,3 +33,4 @@ void nDrivers(int n){
     }
 
 }
+*/
