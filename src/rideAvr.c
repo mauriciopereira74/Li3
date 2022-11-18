@@ -27,14 +27,14 @@ void precoMedioViagens_cidade(char* city){
     printf("%f\n",preço_medio);
 }
 
-int check_dates(char *date_from,struct tm date_to){ // return 1 se date_from > date_to ; return -1 caso contrario ; return 0 se forem iguais
+int check_dates(int day_from,int mon_from, int year_from,struct tm date_to){ // return 1 se date_from > date_to ; return -1 caso contrario ; return 0 se forem iguais
 
-    int day_from,mon_from,year_from;
+    //int day_from,mon_from,year_from;
     int r;
 
-    day_from= atoi(strtok(date_from,"/"));
-    mon_from= atoi(strtok(NULL,"/"));
-    year_from=atoi(strtok(NULL,"/"));
+    //day_from= atoi(strtok(date_from,"/"));
+    //mon_from= atoi(strtok(NULL,"/"));
+    //year_from=atoi(strtok(NULL,"/"));
 
     if (year_from < date_to.tm_year)
         r=-1;
@@ -67,24 +67,35 @@ void precoMedioViagens_datas(char *datas){
     date_from= strtok(datas," ");
     date_to=strtok(NULL," ");
 
+    int day_from,mon_from,year_from;
+    int day_to,mon_to,year_to;
+
+    day_from= atoi(strtok(date_from,"/"));
+    mon_from= atoi(strtok(NULL,"/"));
+    year_from=atoi(strtok(NULL,"/"));
+
+    day_to= atoi(strtok(date_to,"/"));
+    mon_to= atoi(strtok(NULL,"/"));
+    year_to=atoi(strtok(NULL,"/"));
+
+
 
     int i=1;
     for(;i<=1000000;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
-        //printf("%d\n",check_dates(date_to,r->date));
-        //printf("%s\n",date_to);
-        //printf("%d\n",r->date.tm_year);
-        if(check_dates(date_from,r->date)==1 && check_dates(date_to,r->date)==-1){
-            printf("%d\n",check_dates(date_from,r->date));
+        if(check_dates(day_from,mon_from,year_from,r->date)==1){
+            if(check_dates(day_to,mon_to,year_to,r->date)==-1){
+            printf("!!!\n");
             avaliacao_total= avaliacao_total + r->score_user;
             n_viagens++;
             struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
             if(strcmp(d->Class,"basic")==0) total_custo= total_custo + 3.25 + 0.62* r->distance;
             else if(strcmp(d->Class,"green")==0) total_custo= total_custo +4.00+ 0.79* r->distance;
             else total_custo= total_custo + 5.20+ 0.94*r->distance;
+            }
         }
     }
     avaliacao_media = avaliacao_total/n_viagens;
-    printf("%f\n",avaliacao_media);
+    printf("%i\n",avaliacao_total);
 
 }
