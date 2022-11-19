@@ -10,21 +10,24 @@
 #include "../includes/interpreter.h"
 #include "../includes/hashtables.h"
 
-void precoMedioViagens_cidade(char* city){
-    int i=1; double preço_viagem=0; int n_viagens=0;
-    double preço_medio=0;
-    for(;i<=1000000;i++){
+void precoMedioViagens_cidade(char* city,int N,char* filepointer){
+    int i=1; double preco_viagem=0; int n_viagens=0;
+    double preco_medio=0;
+    char* ptr = malloc(sizeof(float));
+
+    for(;i<=N;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
         if(strcmp(r->city,city)==0){
             struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
-            if(strcmp(d->Class,"basic")==0) preço_viagem= preço_viagem + 3.25 + 0.62*r->distance;
-            else if(strcmp(d->Class,"green")==0) preço_viagem= preço_viagem +4.00+ 0.79*r->distance;
-            else preço_viagem= preço_viagem + 5.20+ 0.94*r->distance;
+            if(strcmp(d->Class,"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*r->distance;
+            else if(strcmp(d->Class,"green")==0) preco_viagem= preco_viagem +4.00+ 0.79*r->distance;
+            else preco_viagem= preco_viagem + 5.20+ 0.94*r->distance;
             n_viagens++;
         }
     }
-    preço_medio=preço_viagem/n_viagens;
-    printf("%f\n",preço_medio);
+    preco_medio=preco_viagem/n_viagens;
+    sprintf(ptr,"%f\n",preco_medio);
+    file_writer(filepointer,ptr);
 }
 
 int check_dates(int day,int mon, int year,struct tm date){ // return 1 se date_recebido for depois de date ; return -1 se date_recebido for antes de date; return 0 se forem iguais
@@ -45,11 +48,12 @@ int check_dates(int day,int mon, int year,struct tm date){ // return 1 se date_r
     return r;
 }
 
-void precoMedioViagens_datas(char *datas){
+void precoMedioViagens_datas(char *datas,int N,char* filepointer){
 
     char *date_from,*date_to;
     int avaliacao_total=0; int n_viagens=0;
     double total_custo=0, avaliacao_media=0;
+    char* ptr = malloc(sizeof(float));
 
     date_from= strtok(datas," ");
     date_to=strtok(NULL," ");
@@ -65,7 +69,7 @@ void precoMedioViagens_datas(char *datas){
     mon_to= atoi(strtok(NULL,"/"));
     year_to=atoi(strtok(NULL,"/"));
 
-    for(int i=1;i<=1000000;i++){
+    for(int i=1;i<=N;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
         if((check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
            (check_dates(day_from,mon_from,year_from,r->date)== 0 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
@@ -79,6 +83,7 @@ void precoMedioViagens_datas(char *datas){
         }
     }
     avaliacao_media = avaliacao_total/n_viagens;
-    printf("%f\n",avaliacao_media);
+    sprintf(ptr,"%f\n",avaliacao_media);
+    file_writer(filepointer,ptr);
 
 }
