@@ -184,19 +184,21 @@ Ride clone_ride(Ride r){
  * @param line apontador para um espaço em memória onde será guardada a string(linha)
  * 
  */ 
-void parser(char* line){
-
+void parser(char* line,int num_lines[]){
+    int count = 0;
     FILE* users_data = fopen("../entrada/users.csv","r");
     fgets(line,LINE_SIZE,users_data);
     while(fgets(line,LINE_SIZE,users_data)){
+        count++;
         User temp_user = malloc(sizeof(struct user));
         parse_users(line,temp_user); // a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         user_insert(temp_user);//user_insert(users_table,temp);
         free(temp_user);
     }
-    
     fclose(users_data);
     free(line);
+    num_lines[0] = count;
+    count = 0;
     line = malloc(sizeof(char) * LINE_SIZE);
     
     FILE* drivers_data = fopen("../entrada/drivers.csv","r");
@@ -204,7 +206,7 @@ void parser(char* line){
     
     
     while(fgets(line,LINE_SIZE,drivers_data)){
-    
+        count++;
         Driver temp_driver = malloc(sizeof(struct driver));
         // a funçao retorna cada struct Driver criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         parse_drivers(line,temp_driver);
@@ -215,12 +217,16 @@ void parser(char* line){
     free(line);
     fclose(drivers_data);
 
+    num_lines[1] = count;
+    count = 0;
+
     line = malloc(sizeof(char) * LINE_SIZE);
     
     FILE* rides_data = fopen("../entrada/rides.csv","r");
     fgets(line,LINE_SIZE,drivers_data);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
+        count++;
         Ride temp_ride = malloc(sizeof(struct ride));
         parse_rides(line,temp_ride); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         ride_insert(temp_ride);
@@ -229,5 +235,7 @@ void parser(char* line){
     }
     free(line);
     fclose(rides_data);
+    num_lines[2] = count;
+    count = 0;
 }
 
