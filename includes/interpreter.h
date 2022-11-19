@@ -1,3 +1,3 @@
 char* filename_changer(int filecounter);
 void file_writer(char*filepointer, char* input);
-void command_interpreter(char* line);
+void command_interpreter(char* line,int num_lines[]);
