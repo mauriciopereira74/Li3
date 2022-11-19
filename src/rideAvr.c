@@ -27,33 +27,20 @@ void precoMedioViagens_cidade(char* city){
     printf("%f\n",preço_medio);
 }
 
-int check_dates(int day_from,int mon_from, int year_from,struct tm date_to){ // return 1 se date_from > date_to ; return -1 caso contrario ; return 0 se forem iguais
+int check_dates(int day,int mon, int year,struct tm date){ // return 1 se date_recebido for depois de date ; return -1 se date_recebido for antes de date; return 0 se forem iguais
 
-    //int day_from,mon_from,year_from;
-    int r;
-
-    //day_from= atoi(strtok(date_from,"/"));
-    //mon_from= atoi(strtok(NULL,"/"));
-    //year_from=atoi(strtok(NULL,"/"));
-
-    if (year_from < date_to.tm_year)
-        r=-1;
-
-    else if (year_from > date_to.tm_year)
-       r= 1;
-
-    if (year_from == date_to.tm_year)
-    {
-         if (mon_from < date_to.tm_mon)
-              r=-1;
-         else if (mon_from > date_to.tm_mon)
-              r=1;
-         else if (day_from < date_to.tm_mday)
-              r =-1;
-         else if(day_from > date_to.tm_mday)
-              r= 1;
-         else
-              r= 0;
+    int r=2;
+    
+    if(year>date.tm_year) r= 1;
+    else if(year<date.tm_year) r=-1;
+    else{
+        if(mon>date.tm_mon) r= 1;
+        else if(mon<date.tm_mon) r= -1;
+        else{
+            if (day>date.tm_mday) r= 1;
+            else if(day<date.tm_mday) r= -1;
+            else r= 0;
+        }
     }
     return r;
 }
@@ -74,28 +61,36 @@ void precoMedioViagens_datas(char *datas){
     mon_from= atoi(strtok(NULL,"/"));
     year_from=atoi(strtok(NULL,"/"));
 
+    //printf("day f ->%d\n",day_from);
+    //printf("mon f ->%d\n",mon_from);
+    //printf("year f ->%d\n",year_from);
+
     day_to= atoi(strtok(date_to,"/"));
     mon_to= atoi(strtok(NULL,"/"));
     year_to=atoi(strtok(NULL,"/"));
+
+    //printf("day t ->%d\n",day_to);
+    //printf("mon t ->%d\n",mon_to);
+    //printf("year t ->%d\n",year_to);
 
 
 
     int i=1;
     for(;i<=1000000;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
-        if(check_dates(day_from,mon_from,year_from,r->date)==1){
-            if(check_dates(day_to,mon_to,year_to,r->date)==-1){
-            printf("!!!\n");
+        //printf(" %d from ->%d\n",i,check_dates(day_from,mon_from,year_from,r->date));
+        //printf(" %d to ->%d\n",i,check_dates(day_to,mon_to,year_to,r->date));
+        //printf("%d/%d/%d\n",r->date.tm_mday,r->date.tm_mon,r->date.tm_year);
+        //printf("--------------------\n");
+        if(check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==1){
             avaliacao_total= avaliacao_total + r->score_user;
             n_viagens++;
             struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
             if(strcmp(d->Class,"basic")==0) total_custo= total_custo + 3.25 + 0.62* r->distance;
             else if(strcmp(d->Class,"green")==0) total_custo= total_custo +4.00+ 0.79* r->distance;
             else total_custo= total_custo + 5.20+ 0.94*r->distance;
-            }
         }
     }
     avaliacao_media = avaliacao_total/n_viagens;
-    printf("%i\n",avaliacao_total);
 
 }
