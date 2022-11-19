@@ -24,7 +24,7 @@ int main(){
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
     parser(line,num_lines);
-    printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
+    //printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
     //line = malloc(sizeof(char) * LINE_SIZE);
 
     //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
