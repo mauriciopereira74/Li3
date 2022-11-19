@@ -24,13 +24,14 @@ int age(struct tm birth_date){
    return final_year;
 }
 
-void profileU(char *id){
+void profileU(char *id,int N,char* filepointer){
    struct user *u = g_hash_table_lookup(users_table,id);
    int avaliacao_total=0; int n_viagens=0;
    double total_custo=0, avaliacao_media=0;
+   char* ptr = malloc(sizeof(char)*15);
 
    long int i= 000000000001;
-   for(;i<=1000000;i++){
+   for(;i<=N;i++){
       struct ride *r= g_hash_table_lookup(rides_table,i);
       if(strcmp(r->user_username,id)==0){
          avaliacao_total= avaliacao_total + r->score_user;
@@ -42,12 +43,13 @@ void profileU(char *id){
       }   
    }
    avaliacao_media=avaliacao_total/n_viagens;
-   printf("%s;%s;%d;%f;%d;%f\n",u->name,u->gender,age(u->birth_date),avaliacao_media,n_viagens,total_custo);
-
+   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",u->name,u->gender,age(u->birth_date),avaliacao_media,n_viagens,total_custo);
+   file_writer(filepointer,ptr);
 }
 
 
-void profileD(char *id_r){
+void profileD(char *id_r,int N,char* filepointer){
+   char* ptr = malloc(sizeof(char)*15);
    long int id= atoi(id_r);
    struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
 
@@ -55,7 +57,7 @@ void profileD(char *id_r){
    double total_auferido=0, avaliacao_media=0;
 
    long int i= 1;
-   for(;i<=1000000;i++){
+   for(;i<=N;i++){
       struct ride *r= g_hash_table_lookup(rides_table,i);
       if(r->driver_id==id){
          avaliacao_total= avaliacao_total + r->score_driver;
@@ -69,5 +71,6 @@ void profileD(char *id_r){
       else if(strcmp(d->Class,"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
          else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
-   printf("%s;%s;%d;%f;%d;%f\n",d->name,d->gender,age(d->birth_date),avaliacao_media,n_viagens,total_auferido);
+   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",d->name,d->gender,age(d->birth_date),avaliacao_media,n_viagens,total_auferido);
+   file_writer(filepointer,ptr);
 }
