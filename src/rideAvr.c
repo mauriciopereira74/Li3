@@ -61,28 +61,15 @@ void precoMedioViagens_datas(char *datas){
     mon_from= atoi(strtok(NULL,"/"));
     year_from=atoi(strtok(NULL,"/"));
 
-    //printf("day f ->%d\n",day_from);
-    //printf("mon f ->%d\n",mon_from);
-    //printf("year f ->%d\n",year_from);
-
     day_to= atoi(strtok(date_to,"/"));
     mon_to= atoi(strtok(NULL,"/"));
     year_to=atoi(strtok(NULL,"/"));
 
-    //printf("day t ->%d\n",day_to);
-    //printf("mon t ->%d\n",mon_to);
-    //printf("year t ->%d\n",year_to);
-
-
-
-    int i=1;
-    for(;i<=1000000;i++){
+    for(int i=1;i<=1000000;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
-        //printf(" %d from ->%d\n",i,check_dates(day_from,mon_from,year_from,r->date));
-        //printf(" %d to ->%d\n",i,check_dates(day_to,mon_to,year_to,r->date));
-        //printf("%d/%d/%d\n",r->date.tm_mday,r->date.tm_mon,r->date.tm_year);
-        //printf("--------------------\n");
-        if(check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==1){
+        if((check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
+           (check_dates(day_from,mon_from,year_from,r->date)== 0 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
+           (check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==0)) {
             avaliacao_total= avaliacao_total + r->score_user;
             n_viagens++;
             struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
@@ -92,5 +79,6 @@ void precoMedioViagens_datas(char *datas){
         }
     }
     avaliacao_media = avaliacao_total/n_viagens;
+    printf("%f\n",avaliacao_media);
 
 }
