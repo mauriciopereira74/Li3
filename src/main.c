@@ -17,15 +17,17 @@
  extern GHashTable* rides_table;
 
 int main(){
+    int num_lines[3];
     users_table = g_hash_table_new(g_str_hash, g_str_equal);
     drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
     rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
-    parser(line);
+    parser(line,num_lines);
+    printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
     //line = malloc(sizeof(char) * LINE_SIZE);
 
     //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
-    command_interpreter(line);
+    command_interpreter(line,num_lines);
     return 0;
 }
