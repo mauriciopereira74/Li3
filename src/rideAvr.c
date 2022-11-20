@@ -17,11 +17,11 @@ void precoMedioViagens_cidade(char* city,int N,char* filepointer){
 
     for(;i<=N;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
-        if(strcmp(r->city,city)==0){
-            struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
-            if(strcmp(d->Class,"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*r->distance;
-            else if(strcmp(d->Class,"green")==0) preco_viagem= preco_viagem +4.00+ 0.79*r->distance;
-            else preco_viagem= preco_viagem + 5.20+ 0.94*r->distance;
+        if(strcmp(get_RideCity(r),city)==0){
+            struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
+            if(strcmp(get_Class(d),"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*get_RideDistance(r);
+            else if(strcmp(get_Class(d),"green")==0) preco_viagem= preco_viagem +4.00+ 0.79*get_RideDistance(r);
+            else preco_viagem= preco_viagem + 5.20+ 0.94*get_RideDistance(r);
             n_viagens++;
         }
     }
@@ -71,18 +71,17 @@ void precoMedioViagens_datas(char *datas,int N,char* filepointer){
 
     for(int i=1;i<=N;i++){
         struct ride *r= g_hash_table_lookup(rides_table,i);
-        if((check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
-           (check_dates(day_from,mon_from,year_from,r->date)== 0 && check_dates(day_to,mon_to,year_to,r->date)==1) ||
-           (check_dates(day_from,mon_from,year_from,r->date)==-1 && check_dates(day_to,mon_to,year_to,r->date)==0)) {
-            struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
-            if(strcmp(d->Class,"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*r->distance;
-            else if(strcmp(d->Class,"green")==0) preco_viagem= preco_viagem +4.00+ 0.79*r->distance;
-            else preco_viagem= preco_viagem + 5.20+ 0.94*r->distance;
+        if((check_dates(day_from,mon_from,year_from,get_rideDate(r))==-1 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==1) ||
+           (check_dates(day_from,mon_from,year_from,get_rideDate(r))== 0 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==1) ||
+           (check_dates(day_from,mon_from,year_from,get_rideDate(r))==-1 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==0)) {
+            struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
+            if(strcmp(get_Class(d),"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*get_RideDistance(r);
+            else if(strcmp(get_Class(d),"green")==0) preco_viagem= preco_viagem +4.00+ 0.79*get_RideDistance(r);
+            else preco_viagem= preco_viagem + 5.20+ 0.94*get_RideDistance(r);
             n_viagens++;
         }
     }
     preco_medio=preco_viagem/n_viagens;
     sprintf(ptr,"%f\n",preco_medio);
     file_writer(filepointer,ptr);
-
 }

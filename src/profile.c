@@ -33,17 +33,17 @@ void profileU(char *id,int N,char* filepointer){
    long int i= 000000000001;
    for(;i<=N;i++){
       struct ride *r= g_hash_table_lookup(rides_table,i);
-      if(strcmp(r->user_username,id)==0){
-         avaliacao_total= avaliacao_total + r->score_user;
+      if(strcmp(get_RideUsername(r),id)==0){
+         avaliacao_total= avaliacao_total + get_UserScore(r);
          n_viagens++;
-         struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(r->driver_id));
-         if(strcmp(d->Class,"basic")==0) total_custo= total_custo + 3.25 + 0.62* r->distance;
-         else if(strcmp(d->Class,"green")==0) total_custo= total_custo +4.00+ 0.79* r->distance;
-         else total_custo= total_custo + 5.20+ 0.94*r->distance;
+         struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
+         if(strcmp(get_Class(d),"basic")==0) total_custo= total_custo + 3.25 + 0.62*get_RideDistance(r);
+         else if(strcmp(get_Class(d),"green")==0) total_custo= total_custo +4.00+ 0.79*get_RideDistance(r);
+         else total_custo= total_custo + 5.20+ 0.94*get_RideDistance(r);
       }   
    }
    avaliacao_media=avaliacao_total/n_viagens;
-   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",u->name,u->gender,age(u->birth_date),avaliacao_media,n_viagens,total_custo);
+   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
    file_writer(filepointer,ptr);
 }
 
@@ -59,18 +59,18 @@ void profileD(char *id_r,int N,char* filepointer){
    long int i= 1;
    for(;i<=N;i++){
       struct ride *r= g_hash_table_lookup(rides_table,i);
-      if(r->driver_id==id){
-         avaliacao_total= avaliacao_total + r->score_driver;
+      if(get_rideDriverId(r)==id){
+         avaliacao_total= avaliacao_total + get_DriverScore(r);
          n_viagens++;
-         distancia= distancia + r->distance;
+         distancia= distancia +get_RideDistance(r);
       }
    }
    avaliacao_media=avaliacao_total/n_viagens;
 
-   if(strcmp(d->Class,"basic")==0) total_auferido= total_auferido + 3.25 + 0.62* distancia;
-      else if(strcmp(d->Class,"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
+   if(strcmp(get_Class(d),"basic")==0) total_auferido= total_auferido + 3.25 + 0.62* distancia;
+      else if(strcmp(get_Class(d),"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
          else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
-   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",d->name,d->gender,age(d->birth_date),avaliacao_media,n_viagens,total_auferido);
+   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
    file_writer(filepointer,ptr);
 }

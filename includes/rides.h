@@ -21,6 +21,7 @@ typedef struct ride
     char *city,          /**< string that represents the city of the ride. */
       *comment,          /**< string that represents the comment that was given to the driver/ride. */
       *user_username;        /**< User of the ride. */
+      
     double tip;           /**< float that represents the tip that was given to the driver. */
 
     int score_user,      /**< int that represents the score of the user. */

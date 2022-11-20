@@ -12,7 +12,7 @@ SRC_DIR = src
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%*.c,$(BLD_DIR)/%*.o,$(SRC))
 #-------------
-PROGRAM = prog
+PROGRAM = programa-principal
 ##############
 
 .DEFAULT_GOAL = build
