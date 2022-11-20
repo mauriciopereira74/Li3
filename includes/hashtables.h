@@ -1,3 +1,6 @@
+#ifndef HASHTABLES_H
+#define HASHTABLES_H
+
 #include "../includes/drivers.h"
 #include "../includes/users.h"
 #include "../includes/rides.h"
@@ -45,3 +48,5 @@ struct tm get_driverBirth(Driver d);
 char *get_driverGender(Driver d);
 char *get_Class(Driver d);
 struct tm get_driverCreated(Driver d);
+
+#endif
