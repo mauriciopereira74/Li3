@@ -28,7 +28,7 @@ void profileU(char *id,int N,char* filepointer){
    struct user *u = g_hash_table_lookup(users_table,id);
    int avaliacao_total=0; int n_viagens=0;
    double total_custo=0, avaliacao_media=0;
-   char* ptr1 = malloc(sizeof(char)*15);
+   char* ptr = malloc(sizeof(char)*15);
 
    long int i= 000000000001;
    for(;i<=N;i++){
@@ -43,17 +43,13 @@ void profileU(char *id,int N,char* filepointer){
       }   
    }
    avaliacao_media=avaliacao_total/n_viagens;
-   sprintf(ptr1,"%s;%s;%d;%f;%d;%f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
-   file_writer(filepointer,ptr1);
-   free(ptr1);
+   sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
+   file_writer(filepointer,ptr);
 }
 
 
 void profileD(char *id_r,int N,char* filepointer){
-   printf("ENTROU NA DRIVER\n");
-   char* ptr = malloc(sizeof(char) * 200 );
-   printf("malloc\n");
-   
+   char* ptr = malloc(sizeof(char)*15);
    long int id= atoi(id_r);
    struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
 
@@ -62,7 +58,6 @@ void profileD(char *id_r,int N,char* filepointer){
 
    long int i= 1;
    for(;i<=N;i++){
-      
       struct ride *r= g_hash_table_lookup(rides_table,i);
       if(get_rideDriverId(r)==id){
          avaliacao_total= avaliacao_total + get_DriverScore(r);
@@ -76,10 +71,6 @@ void profileD(char *id_r,int N,char* filepointer){
       else if(strcmp(get_Class(d),"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
          else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
-   printf("ERRO NO SPRINTF\n");
-   printf("%d\n",age(get_driverBirth(d)));
    sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
-   printf("ERRO NO OUTPUT\n");
    file_writer(filepointer,ptr);
-   printf("ERRO NO WRITE\n");
 }

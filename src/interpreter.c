@@ -32,7 +32,6 @@ void command_interpreter(char* line,int num_lines[]){
     int output_counter = 0;
     char* filepointer, *input;
     while(fgets(line,LINE_SIZE,commands_file)){
-       
         output_counter++;// para colocar o numero no ficheiro de output
         char* querie_id = strdup(strsep(&line," ")); // analisa qual a querie a executar
         

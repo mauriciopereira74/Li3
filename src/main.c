@@ -27,18 +27,7 @@ int main(){
     //printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
     //line = malloc(sizeof(char) * LINE_SIZE);
 
-<<<<<<< HEAD
-        char* line = malloc(sizeof(char) * LINE_SIZE);
-        parser(line,argv[1],num_lines);
-        printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
-        
-        line = malloc(sizeof(char) * LINE_SIZE);
-        //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
-        command_interpreter(line,argv[2],num_lines);
-    }
-=======
     //else if (g_hash_table_contains(drivers_table,identifier) && querie==1) profileD(identifier);
     command_interpreter(line,num_lines);
->>>>>>> parent of 72d91a3 (executable can now receive arguments)
     return 0;
 }
