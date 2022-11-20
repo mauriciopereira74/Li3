@@ -184,9 +184,19 @@ Ride clone_ride(Ride r){
  * @param line apontador para um espaço em memória onde será guardada a string(linha)
  * 
  */ 
-void parser(char* line,int num_lines[]){
+void parser(char* line,int num_lines[],char* path){
+    char* user_path = malloc(sizeof(path));
+    strcpy(user_path,path);
+    strcat(user_path,"/users.csv");
+    char* driver_path = malloc(sizeof(path));
+    strcpy(driver_path,path);
+    strcat(driver_path,"/drivers.csv");
+    char* ride_path = malloc(sizeof(path));
+    strcpy(ride_path,path);
+    strcat(ride_path,"/rides.csv");
+
     int count = 0;
-    FILE* users_data = fopen("../entrada/users.csv","r");
+    FILE* users_data = fopen(user_path,"r");
     fgets(line,LINE_SIZE,users_data);
     while(fgets(line,LINE_SIZE,users_data)){
         count++;
@@ -201,7 +211,7 @@ void parser(char* line,int num_lines[]){
     count = 0;
     line = malloc(sizeof(char) * LINE_SIZE);
     
-    FILE* drivers_data = fopen("../entrada/drivers.csv","r");
+    FILE* drivers_data = fopen(driver_path,"r");
     fgets(line,LINE_SIZE,drivers_data);
     
     
@@ -222,7 +232,7 @@ void parser(char* line,int num_lines[]){
 
     line = malloc(sizeof(char) * LINE_SIZE);
     
-    FILE* rides_data = fopen("../entrada/rides.csv","r");
+    FILE* rides_data = fopen(ride_path,"r");
     fgets(line,LINE_SIZE,drivers_data);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
@@ -237,5 +247,6 @@ void parser(char* line,int num_lines[]){
     fclose(rides_data);
     num_lines[2] = count;
     count = 0;
+    
 }
 
