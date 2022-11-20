@@ -27,14 +27,8 @@ void file_writer(char*filepointer, char* input){
     fclose(resultado);
 }
 
-void command_interpreter(char* line,char* file_path,int num_lines[]){
-    printf("ardeu123\n");
-    char* cmd_path = malloc(sizeof(file_path));
-    strcpy(cmd_path,file_path);
-    char* cmd_file = strcat(cmd_path,"/commands.txt");
-    printf("%s\n",cmd_file);
-    FILE* commands_file = fopen(cmd_file,"r");
-    printf("ardeu123\n");
+void command_interpreter(char* line,int num_lines[]){
+    FILE* commands_file = fopen("../entrada/commands.txt","r");
     int output_counter = 0;
     char* filepointer, *input;
     while(fgets(line,LINE_SIZE,commands_file)){

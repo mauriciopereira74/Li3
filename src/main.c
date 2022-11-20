@@ -27,7 +27,6 @@ int main(int argc,char* argv[]){
         drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
         rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
 
-        printf("%s\n%s\n",argv[1],argv[2]);
         char* line = malloc(sizeof(char) * LINE_SIZE);
         parser(line,argv[1],num_lines);
         printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);

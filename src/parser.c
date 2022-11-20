@@ -192,10 +192,12 @@ void parser(char* line,char* file_path,int num_lines[]){
     strcpy(user_path,file_path);
     strcpy(driver_path,file_path);
     strcpy(rides_path,file_path);
-    
+
     char* user_file = strcat(user_path,"/users.csv");
     char* driver_file = strcat(driver_path,"/drivers.csv");
     char* rides_file = strcat(rides_path,"/rides.csv");
+    printf("!!!\n");
+    
     int count = 0;
     FILE* users_data = fopen(user_file,"r");
     
