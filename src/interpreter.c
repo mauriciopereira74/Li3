@@ -28,8 +28,9 @@ void file_writer(char*filepointer, char* input){
     fclose(resultado);
 }
 
-void command_interpreter(char* line,int num_lines[]){
-    FILE* commands_file = fopen("../entrada/commands.txt","r");
+void command_interpreter(char* line,char* file_path,int num_lines[]){
+    char* cmd_file = strcat(file_path,"commands.txt");
+    FILE* commands_file = fopen(cmd_file,"r");
     int output_counter = 0;
     char* filepointer, *input;
     while(fgets(line,LINE_SIZE,commands_file)){
