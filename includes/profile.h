@@ -1,3 +1,7 @@
+#ifndef PROFILE_H
+#define PROFILE_H
 
-void profileU(char *id,int N,char* filepointer);
-void profileD(char *id,int N,char* filepointer);
+void profile(char *id,int N,char* filepointer);
+int age(struct tm birth_date);
+
+#endif
