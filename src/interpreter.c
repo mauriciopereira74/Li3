@@ -8,7 +8,6 @@
 #include "../includes/interpreter.h"
 #include "../includes/profile.h"
 #include "../includes/rideAvr.h"
-#include "../includes/nAVR.h"
 #include "../includes/hashtables.h"
 
 
@@ -29,11 +28,17 @@ void file_writer(char*filepointer, char* input){
 }
 
 void command_interpreter(char* line,char* file_path,int num_lines[]){
-    char* cmd_file = strcat(file_path,"commands.txt");
+    printf("ardeu123\n");
+    char* cmd_path = malloc(sizeof(file_path));
+    strcpy(cmd_path,file_path);
+    char* cmd_file = strcat(cmd_path,"/commands.txt");
+    printf("%s\n",cmd_file);
     FILE* commands_file = fopen(cmd_file,"r");
+    printf("ardeu123\n");
     int output_counter = 0;
     char* filepointer, *input;
     while(fgets(line,LINE_SIZE,commands_file)){
+       
         output_counter++;// para colocar o numero no ficheiro de output
         char* querie_id = strdup(strsep(&line," ")); // analisa qual a querie a executar
         
