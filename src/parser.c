@@ -184,11 +184,22 @@ Ride clone_ride(Ride r){
  * @param line apontador para um espaço em memória onde será guardada a string(linha)
  * 
  */ 
-void parser(char* line,int num_lines[]){
+void parser(char* line,char* file_path,int num_lines[]){
+    char* user_path = malloc(sizeof(char) * strlen(file_path));
+    char* driver_path = malloc(sizeof(char) * strlen(file_path));
+    char* rides_path = malloc(sizeof(char) * strlen(file_path));
+    strcpy(user_path,file_path);
+    strcpy(driver_path,file_path);
+    strcpy(rides_path,file_path);
+    
+    char* user_file = strcat(user_path,"users.csv");
+    char* driver_file = strcat(driver_path,"drivers.csv");
+    char* rides_file = strcat(rides_path,"rides.csv");
     int count = 0;
-    FILE* users_data = fopen("../entrada/users.csv","r");
+    FILE* users_data = fopen(user_file,"r");
     fgets(line,LINE_SIZE,users_data);
     while(fgets(line,LINE_SIZE,users_data)){
+        
         count++;
         User temp_user = malloc(sizeof(struct user));
         parse_users(line,temp_user); // a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
@@ -201,7 +212,7 @@ void parser(char* line,int num_lines[]){
     count = 0;
     line = malloc(sizeof(char) * LINE_SIZE);
     
-    FILE* drivers_data = fopen("../entrada/drivers.csv","r");
+    FILE* drivers_data = fopen(driver_file,"r");
     fgets(line,LINE_SIZE,drivers_data);
     
     
@@ -222,8 +233,8 @@ void parser(char* line,int num_lines[]){
 
     line = malloc(sizeof(char) * LINE_SIZE);
     
-    FILE* rides_data = fopen("../entrada/rides.csv","r");
-    fgets(line,LINE_SIZE,drivers_data);
+    FILE* rides_data = fopen(rides_file,"r");
+    fgets(line,LINE_SIZE,rides_data);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
         count++;
