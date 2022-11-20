@@ -27,7 +27,6 @@ int age(struct tm birth_date){
 void profile(char *id_r,int N,char* filepointer){
     char ptr[100];
     if(g_hash_table_contains(drivers_table,atoi(id_r))){
-      printf("ENTROU\n");
         
         long int id= atoi(id_r);
         struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
@@ -51,7 +50,6 @@ void profile(char *id_r,int N,char* filepointer){
                 else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
         sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
-      printf("%s\n",ptr);
     }
 
 

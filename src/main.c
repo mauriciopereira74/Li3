@@ -17,8 +17,9 @@
  extern GHashTable* rides_table;
 
 int main(int argc, char const *argv[]){
+
     if (argc == 0){
-        printf("MERDA\n");
+        printf("Path invalida\n");
     }
     else{
     int num_lines[3];

@@ -185,15 +185,17 @@ Ride clone_ride(Ride r){
  * 
  */ 
 void parser(char* line,int num_lines[],char* path){
-    char* user_path = malloc(sizeof(path));
+
+    char user_path [BUFSIZ];//= malloc(sizeof(path));
     strcpy(user_path,path);
     strcat(user_path,"/users.csv");
-    char* driver_path = malloc(sizeof(path));
+    char driver_path [BUFSIZ];//= malloc(sizeof(path));
     strcpy(driver_path,path);
     strcat(driver_path,"/drivers.csv");
-    char* ride_path = malloc(sizeof(path));
+    char ride_path [BUFSIZ];// malloc(sizeof(path));
     strcpy(ride_path,path);
     strcat(ride_path,"/rides.csv");
+
 
     int count = 0;
     FILE* users_data = fopen(user_path,"r");
