@@ -19,9 +19,19 @@ int age(struct tm birth_date){
     int birth_year= birth_date.tm_year;
 
     
-   int final_year = present_year - birth_year;
+    int final_year = present_year - birth_year;
+
+    if(info->tm_mon < birth_date.tm_mon){
+
+        final_year--;
+   }
+   if(info->tm_mon == birth_date.tm_mon){
+        if(info->tm_mday < birth_date.tm_mday){
+            final_year--;
+        }
 
    return final_year;
+    }
 }
 
 void profile(char *id_r,int N,char* filepointer){
@@ -50,7 +60,7 @@ void profile(char *id_r,int N,char* filepointer){
                 else if(strcmp(get_Class(d),"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
                     else total_auferido= total_auferido + 5.20+ 0.94*distancia;
 
-            sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
+            sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
         }
         else{sprintf(ptr,"Driver %s is inactive\n",get_driverName(d));}
     }
@@ -79,7 +89,7 @@ void profile(char *id_r,int N,char* filepointer){
                 }   
             }
             avaliacao_media=avaliacao_total/n_viagens;
-            sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
+            sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
         }
         else{sprintf(ptr,"User %s is inactive\n",get_name(u));}
     }
