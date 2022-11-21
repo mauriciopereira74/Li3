@@ -29,74 +29,80 @@ int age(struct tm birth_date){
         if(info->tm_mday < birth_date.tm_mday){
             final_year--;
         }
-
-   return final_year;
     }
+    return final_year;
 }
 
-void profile(char *id_r,int N,char* filepointer){
+
+void profile(char *id_s,int N,char* filepointer){
+    int flag = 1;
     char ptr[BUFSIZ];
-    if(g_hash_table_contains(drivers_table,atoi(id_r))){
+    int id= atoi(id_s);
+    if(g_hash_table_contains(drivers_table,GINT_TO_POINTER(id))){
         
-        long int id= atoi(id_r);
         struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
 
         if(strcmp(get_driverStatus(d),"active")==0){
             int avaliacao_total=0; int n_viagens=0; int distancia=0;
             double total_auferido=0, avaliacao_media=0;
 
-            long int i= 1;
+            int i= 1;
             for(;i<=N;i++){
-                struct ride *r= g_hash_table_lookup(rides_table,i);
+                struct ride *r= g_hash_table_lookup(rides_table,GINT_TO_POINTER(i));
                 if(get_rideDriverId(r)==id){
                     avaliacao_total= avaliacao_total + get_DriverScore(r);
                     n_viagens++;
                     distancia= distancia +get_RideDistance(r);
                 }
             }
-            avaliacao_media=avaliacao_total/n_viagens;
-
-            if(strcmp(get_Class(d),"basic")==0) total_auferido= total_auferido + 3.25 + 0.62* distancia;
-                else if(strcmp(get_Class(d),"green")==0) total_auferido= total_auferido +4.00+ 0.79* distancia;
-                    else total_auferido= total_auferido + 5.20+ 0.94*distancia;
+            avaliacao_media=avaliacao_total/(double)n_viagens;
+            if(strcmp(get_Class(d),"basic")==0) total_auferido= (double)total_auferido + 3.25 + 0.62* distancia;
+                else if(strcmp(get_Class(d),"green")==0) total_auferido= (double)total_auferido +4.00+ 0.79* distancia;
+                    else total_auferido= (double)total_auferido + 5.20+ 0.94*distancia;
 
             sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
         }
-        else{sprintf(ptr,"Driver %s is inactive\n",get_driverName(d));}
+        else{
+            flag = 0;
+        }
     }
 
-
-
-    else if(g_hash_table_contains(users_table,id_r)){
-
-        struct user *u = g_hash_table_lookup(users_table,id_r);
+    else if(g_hash_table_contains(users_table,id_s)){
+        struct user *u = g_hash_table_lookup(users_table,id_s);
 
         if(strcmp(get_userStatus(u),"active")==0){
 
-            int avaliacao_total=0; int n_viagens=0;
-            double total_custo=0, avaliacao_media=0;
+            int avaliacao_total=0, n_viagens=0, distancia=0;
+            double total_custo=0,avaliacao_media=0;
 
-            long int i= 000000000001;
+            int i= 1;
             for(;i<=N;i++){
-                struct ride *r= g_hash_table_lookup(rides_table,i);
-                if(strcmp(get_RideUsername(r),id_r)==0){
+                struct ride *r= g_hash_table_lookup(rides_table,GINT_TO_POINTER(i));
+                if(strcmp(get_RideUsername(r),id_s)==0){
                     avaliacao_total= avaliacao_total + get_UserScore(r);
                     n_viagens++;
+                    distancia= distancia +get_RideDistance(r);
+
                     struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
-                    if(strcmp(get_Class(d),"basic")==0) total_custo= total_custo + 3.25 + 0.62*get_RideDistance(r);
-                    else if(strcmp(get_Class(d),"green")==0) total_custo= total_custo +4.00+ 0.79*get_RideDistance(r);
-                    else total_custo= total_custo + 5.20+ 0.94*get_RideDistance(r);
-                }   
+                    
+                    if(strcmp(get_Class(d),"basic")==0) total_custo = (double)total_custo+ 3.25 + 0.62 *distancia;
+                    else if(strcmp(get_Class(d),"green")==0) total_custo =(double)total_custo+ 4.00+ 0.79*distancia;
+                    else total_custo =(double)total_custo+ 5.20+ 0.94 * distancia;
+                    
+                }
             }
-            avaliacao_media=avaliacao_total/n_viagens;
+            avaliacao_media=avaliacao_total/(double)n_viagens;
             sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
         }
-        else{sprintf(ptr,"User %s is inactive\n",get_name(u));}
+        else{
+            flag = 0;
+        }
     }
 
 
    FILE* output = fopen(filepointer,"w");
-   fprintf(output,"%s",ptr);;
+    if(flag == 1){
+    fprintf(output,"%s",ptr);
+    }
    fclose(output);
 }
-

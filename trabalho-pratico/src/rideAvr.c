@@ -16,7 +16,7 @@ void precoMedioViagens_cidade(char* city,int N,char* filepointer){
     char* ptr = malloc(sizeof(float));
 
     for(;i<=N;i++){
-        struct ride *r= g_hash_table_lookup(rides_table,i);
+        struct ride *r= g_hash_table_lookup(rides_table,GINT_TO_POINTER(i));
         if(strcmp(get_RideCity(r),city)==0){
             struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
             if(strcmp(get_Class(d),"basic")==0) preco_viagem= preco_viagem + 3.25 + 0.62*get_RideDistance(r);
@@ -25,7 +25,7 @@ void precoMedioViagens_cidade(char* city,int N,char* filepointer){
             n_viagens++;
         }
     }
-    preco_medio=preco_viagem/n_viagens;
+    preco_medio=preco_viagem/(double)n_viagens;
     sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
 }
@@ -70,7 +70,7 @@ void precoMedioViagens_datas(char *datas,int N,char* filepointer){
     year_to=atoi(strtok(NULL,"/"));
 
     for(int i=1;i<=N;i++){
-        struct ride *r= g_hash_table_lookup(rides_table,i);
+        struct ride *r= g_hash_table_lookup(rides_table,GINT_TO_POINTER(i));
         if((check_dates(day_from,mon_from,year_from,get_rideDate(r))==-1 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==1) ||
            (check_dates(day_from,mon_from,year_from,get_rideDate(r))== 0 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==1) ||
            (check_dates(day_from,mon_from,year_from,get_rideDate(r))==-1 && check_dates(day_to,mon_to,year_to,get_rideDate(r))==0)) {
@@ -81,7 +81,7 @@ void precoMedioViagens_datas(char *datas,int N,char* filepointer){
             n_viagens++;
         }
     }
-    preco_medio=preco_viagem/n_viagens;
+    preco_medio=preco_viagem/(double)n_viagens;
     sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
 }

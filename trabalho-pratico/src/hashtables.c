@@ -139,7 +139,7 @@ char *get_driverGender(Driver d){
 }
 
 char *get_Class(Driver d){
-    return d->gender;
+    return d->Class;
 }
 
 struct tm get_driverCreated(Driver d){

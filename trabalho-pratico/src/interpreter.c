@@ -102,5 +102,3 @@ void command_interpreter(char* line,int num_lines[],char* path){
     fclose(commands_file);
     free(line);
 }
-
-
