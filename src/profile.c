@@ -26,7 +26,7 @@ int age(struct tm birth_date){
 
 void profile(char *id_r,int N,char* filepointer){
     char ptr[BUFSIZ];
-    if(g_hash_table_contains(drivers_table,id_r)){
+    if(g_hash_table_contains(drivers_table,atoi(id_r))){
         
         long int id= atoi(id_r);
         struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
@@ -52,17 +52,20 @@ void profile(char *id_r,int N,char* filepointer){
 
             sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
         }
+        else{sprintf(ptr,"Driver %s is inactive\n",get_driverName(d));}
     }
 
 
 
     else if(g_hash_table_contains(users_table,id_r)){
+
         struct user *u = g_hash_table_lookup(users_table,id_r);
 
         if(strcmp(get_userStatus(u),"active")==0){
+
             int avaliacao_total=0; int n_viagens=0;
             double total_custo=0, avaliacao_media=0;
-            
+
             long int i= 000000000001;
             for(;i<=N;i++){
                 struct ride *r= g_hash_table_lookup(rides_table,i);
@@ -77,9 +80,8 @@ void profile(char *id_r,int N,char* filepointer){
             }
             avaliacao_media=avaliacao_total/n_viagens;
             sprintf(ptr,"%s;%s;%d;%f;%d;%f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
-            //strcpy(ptr,aux);
-            //printf("%s\n",ptr);
         }
+        else{sprintf(ptr,"User %s is inactive\n",get_name(u));}
     }
 
 
