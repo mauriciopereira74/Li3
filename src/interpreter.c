@@ -28,8 +28,10 @@ void file_writer(char*filepointer, char* input){
 }
 
 void command_interpreter(char* line,int num_lines[],char* path){
-    
-    FILE* commands_file = fopen("../entrada/commands.txt","r");
+    char cmd_path [BUFSIZ];//= malloc(sizeof(path));
+    strcpy(cmd_path,path);
+    strcat(cmd_path,"/commands.txt");
+    FILE* commands_file = fopen(cmd_path,"r");
     int output_counter = 0;
     char* filepointer, *input;
     while(fgets(line,LINE_SIZE,commands_file)){
