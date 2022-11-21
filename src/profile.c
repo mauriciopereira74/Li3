@@ -25,7 +25,7 @@ int age(struct tm birth_date){
 }
 
 void profile(char *id_r,int N,char* filepointer){
-    char ptr[100];
+    char ptr[BUFSIZ];
     if(g_hash_table_contains(drivers_table,atoi(id_r))){
         
         long int id= atoi(id_r);

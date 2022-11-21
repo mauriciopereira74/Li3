@@ -235,7 +235,7 @@ void parser(char* line,int num_lines[],char* path){
     line = malloc(sizeof(char) * LINE_SIZE);
     
     FILE* rides_data = fopen(ride_path,"r");
-    fgets(line,LINE_SIZE,drivers_data);
+    fgets(line,LINE_SIZE,rides_data);
 
     while(fgets(line,LINE_SIZE,rides_data)){ 
         count++;
