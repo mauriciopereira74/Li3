@@ -16,7 +16,7 @@
  extern GHashTable* drivers_table;
  extern GHashTable* rides_table;
 
-int main(int argc, char const *argv[]){
+int main(int argc, char *argv[]){
 
     if (argc == 0){
         printf("Path invalida\n");
