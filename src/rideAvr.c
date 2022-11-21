@@ -26,7 +26,7 @@ void precoMedioViagens_cidade(char* city,int N,char* filepointer){
         }
     }
     preco_medio=preco_viagem/n_viagens;
-    sprintf(ptr,"%f\n",preco_medio);
+    sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
 }
 
@@ -82,6 +82,6 @@ void precoMedioViagens_datas(char *datas,int N,char* filepointer){
         }
     }
     preco_medio=preco_viagem/n_viagens;
-    sprintf(ptr,"%f\n",preco_medio);
+    sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
 }
