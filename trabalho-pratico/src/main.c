@@ -1,7 +1,6 @@
-#include "../includes/drivers.h"
-#include "../includes/users.h"
-#include "../includes/rides.h"
-#include "../includes/parser.h"
+#include "../includes/parse_users.h"
+#include "../includes/parse_drivers.h"
+#include "../includes/parse_rides.h"
 #include "../includes/interpreter.h"
 #include "../includes/hashtables.h"
 #include "../includes/profile.h"
@@ -28,7 +27,11 @@ int main(int argc, char *argv[]){
     rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
-    parser(line,num_lines,argv[1]);
+    parser_users(line,num_lines,argv[1]);
+    parser_drivers(line,num_lines,argv[1]);
+    parser_rides(line,num_lines,argv[1]);
+
+
     //printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);
     //line = malloc(sizeof(char) * LINE_SIZE);
 

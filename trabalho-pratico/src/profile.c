@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../includes/drivers.h"
-#include "../includes/users.h"
-#include "../includes/rides.h"
-#include "../includes/parser.h"
-#include "../includes/interpreter.h"
+#include "../includes/parse_users.h"
+#include "../includes/parse_drivers.h"
+#include "../includes/parse_rides.h"
 #include "../includes/profile.h"
 #include "../includes/hashtables.h"
 
@@ -14,9 +12,11 @@
 #define REF_MON 10
 #define REF_YEAR 2022
 
+
 extern GHashTable* users_table;
 extern GHashTable* drivers_table;
 extern GHashTable* rides_table;
+
 
 int age(struct tm birth_date){
     int birth_year= birth_date.tm_year;

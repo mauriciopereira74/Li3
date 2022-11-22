@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-#include "../includes/drivers.h"
-#include "../includes/users.h"
-#include "../includes/rides.h"
-#include "../includes/parser.h"
+#include "../includes/parse_users.h"
+#include "../includes/parse_drivers.h"
+#include "../includes/parse_rides.h"
 #include "../includes/interpreter.h"
 #include "../includes/hashtables.h"
 
