@@ -1,16 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../includes/drivers.h"
-#include "../includes/users.h"
-#include "../includes/rides.h"
-#include "../includes/parser.h"
+#include "../includes/parse_users.h"
+#include "../includes/parse_drivers.h"
+#include "../includes/parse_rides.h"
 #include "../includes/interpreter.h"
 #include "../includes/profile.h"
 #include "../includes/rideAvr.h"
 #include "../includes/hashtables.h"
-
-
 
 #define filenametemplate "../Resultados/command%d_output.txt"
 
@@ -30,7 +27,7 @@ void file_writer(char*filepointer, char* input){
 void command_interpreter(char* line,int num_lines[],char* path){
     char cmd_path [BUFSIZ];//= malloc(sizeof(path));
     strcpy(cmd_path,path);
-    strcat(cmd_path,"/commands.txt");
+    strcat(cmd_path,"/input.txt");
     FILE* commands_file = fopen(cmd_path,"r");
     int output_counter = 0;
     char* filepointer, *input;
