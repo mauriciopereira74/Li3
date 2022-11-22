@@ -10,23 +10,22 @@
 #include "../includes/profile.h"
 #include "../includes/hashtables.h"
 
+#define REF_DAY 9
+#define REF_MON 10
+#define REF_YEAR 2022
 
 int age(struct tm birth_date){
-    time_t rawtime;
-    time(&rawtime);
-    struct tm *info=localtime(&rawtime);
-    int present_year= info->tm_year+1900;
     int birth_year= birth_date.tm_year;
 
     
-    int final_year = present_year - birth_year;
+    int final_year = REF_YEAR - birth_year;
 
-    if(info->tm_mon < birth_date.tm_mon){
+    if(REF_MON < birth_date.tm_mon){
 
         final_year--;
    }
-   if(info->tm_mon == birth_date.tm_mon){
-        if(info->tm_mday < birth_date.tm_mday){
+   if(REF_MON == birth_date.tm_mon){
+        if(REF_DAY < birth_date.tm_mday){
             final_year--;
         }
     }
@@ -43,7 +42,7 @@ void profile(char *id_s,int N,char* filepointer){
         struct driver *d = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
 
         if(strcmp(get_driverStatus(d),"active")==0){
-            int avaliacao_total=0; int n_viagens=0; int distancia=0;
+            int avaliacao_total=0; int n_viagens=0;
             double total_auferido=0, avaliacao_media=0;
 
             int i= 1;
@@ -52,13 +51,13 @@ void profile(char *id_s,int N,char* filepointer){
                 if(get_rideDriverId(r)==id){
                     avaliacao_total= avaliacao_total + get_DriverScore(r);
                     n_viagens++;
-                    distancia= distancia +get_RideDistance(r);
+
+                    if(strcmp(get_Class(d),"basic")==0) total_auferido += 3.25 + 0.62* (double)get_RideDistance(r) + get_tip(r);
+                    else if(strcmp(get_Class(d),"green")==0) total_auferido += 4.00+ 0.79* (double)get_RideDistance(r) + get_tip(r);
+                    else total_auferido += 5.20+ 0.94* (double)get_RideDistance(r) + get_tip(r);
                 }
             }
             avaliacao_media=avaliacao_total/(double)n_viagens;
-            if(strcmp(get_Class(d),"basic")==0) total_auferido= (double)total_auferido + 3.25 + 0.62* distancia;
-                else if(strcmp(get_Class(d),"green")==0) total_auferido= (double)total_auferido +4.00+ 0.79* distancia;
-                    else total_auferido= (double)total_auferido + 5.20+ 0.94*distancia;
 
             sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_driverName(d),get_driverGender(d),age(get_driverBirth(d)),avaliacao_media,n_viagens,total_auferido);
         }
@@ -72,8 +71,8 @@ void profile(char *id_s,int N,char* filepointer){
 
         if(strcmp(get_userStatus(u),"active")==0){
 
-            int avaliacao_total=0, n_viagens=0, distancia=0;
-            double total_custo=0,avaliacao_media=0;
+            int avaliacao_total=0, n_viagens=0;
+            double total_gasto=0,avaliacao_media=0;
 
             int i= 1;
             for(;i<=N;i++){
@@ -81,18 +80,17 @@ void profile(char *id_s,int N,char* filepointer){
                 if(strcmp(get_RideUsername(r),id_s)==0){
                     avaliacao_total= avaliacao_total + get_UserScore(r);
                     n_viagens++;
-                    distancia= distancia +get_RideDistance(r);
 
                     struct driver *d= g_hash_table_lookup(drivers_table,GINT_TO_POINTER(get_rideDriverId(r)));
                     
-                    if(strcmp(get_Class(d),"basic")==0) total_custo = (double)total_custo+ 3.25 + 0.62 *distancia;
-                    else if(strcmp(get_Class(d),"green")==0) total_custo =(double)total_custo+ 4.00+ 0.79*distancia;
-                    else total_custo =(double)total_custo+ 5.20+ 0.94 * distancia;
+                    if(strcmp(get_Class(d),"basic")==0) total_gasto += 3.25 + 0.62 *get_RideDistance(r) + get_tip(r);
+                    else if(strcmp(get_Class(d),"green")==0) total_gasto +=  4.00+ 0.79*get_RideDistance(r) + get_tip (r);
+                    else total_gasto += 5.20+ 0.94 * get_RideDistance(r) + get_tip (r);
                     
                 }
             }
             avaliacao_media=avaliacao_total/(double)n_viagens;
-            sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_custo);
+            sprintf(ptr,"%s;%s;%d;%.3f;%d;%.3f\n",get_name(u),get_userGender(u),age(get_userBirth(u)),avaliacao_media,n_viagens,total_gasto);
         }
         else{
             flag = 0;

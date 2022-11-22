@@ -1,36 +1,37 @@
-###############
-CC = cc 
-IDIR = ../include
-
+CC = gcc 
 CFLAGS = -Wall -ansi `pkg-config --cflags --libs glib-2.0` -I$(IDIR)
-#-------------
-BIN_DIR = bin
-BLD_DIR = build
-INC_DIR = includes
-SRC_DIR = src
-#-------------
-SRC = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(patsubst $(SRC_DIR)/%*.c,$(BLD_DIR)/%*.o,$(SRC))
-#-------------
-PROGRAM = programa-principal
-##############
+COMPILER=gcc
+HEADERS=libs
+SRC=src
+OBJ=obj
 
-.DEFAULT_GOAL = build
+all: main parser hashtables interpreter profile rideAvr
 
-build: setup $(BIN_DIR)/$(PROGRAM)
+main: $(SRC)/main.c $(HEADERS)/main.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/main.o $(PKG) -c $(SRC)/main.c
 
-$(BIN_DIR)/$(PROGRAM): $(OBJS)
-	$(CC) -I $(INC_DIR) $(CFLAGS) -o $@ $^
- 
-$(BLD_DIR)/%*.o: $(SRC_DIR)/%.c
-	$(CC) -I $(INC_DIR) $(CFLAGS) -o $@ $^
+parser: $(SRC)/parser.c $(HEADERS)/parser.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/parser.o $(PKG) -c $(SRC)/parser.c
 
-.PHONY: setup
-setup:
-	@mkdir -p $(BIN_DIR)
-	@mkdir -p $(BLD_DIR)
+hashtables: $(SRC)/hashtables.c $(HEADERS)/hashtables.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/hashtables.o $(PKG) -c $(SRC)/hashtables.c
 
-.PHONY: clean
+interpreter: $(SRC)/interpreter.c $(HEADERS)/interpreter.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/interpreter.o $(PKG) -c $(SRC)/interpreter.c
+
+profile: $(SRC)/profile.c $(HEADERS)/profile.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/profile.o $(PKG) -c $(SRC)/profile.c
+
+rideAvr: $(SRC)/rideAvr.c $(HEADERS)/rideAvr.h
+	$(COMPILER) $(FLAGS) -o $(OBJ)/rideAvr.o $(PKG) -c $(SRC)/rideAvr.c
+
+
+programa-principal: $(SRC)/main.c $(OBJ)/main.o $(OBJ)/parser.o $(OBJ)/hashtables.o $(OBJ)/interpreter.o $(OBJ)/profile.o $(OBJ)/rideAvr.o
+	$(COMPILER) $(FLAGS) $(OBJ)/parser.o $(OBJ)/hashtables.o $(OBJ)/interpreter.o $(OBJ)/profile.o $(OBJ)/rideAvr.o $(OBJ)/main.o  -o programa-principal
+
+
+memcheck:
+	valgrind --leak-check=yes -s ./programa-principal
+
 clean:
-	@-rm -r $(BLD_DIR)
-	@-rm $(BIN_DIR)/$(PROGRAM)
+	rm -rf $(OBJ)/*.o programa-principal
