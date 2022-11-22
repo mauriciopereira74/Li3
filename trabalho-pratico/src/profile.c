@@ -14,6 +14,10 @@
 #define REF_MON 10
 #define REF_YEAR 2022
 
+extern GHashTable* users_table;
+extern GHashTable* drivers_table;
+extern GHashTable* rides_table;
+
 int age(struct tm birth_date){
     int birth_year= birth_date.tm_year;
 

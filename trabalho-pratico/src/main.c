@@ -12,9 +12,9 @@
 #include <string.h>
 #include <time.h>
  
- extern GHashTable* users_table;
- extern GHashTable* drivers_table;
- extern GHashTable* rides_table;
+extern GHashTable* users_table;
+extern GHashTable* drivers_table;
+extern GHashTable* rides_table;
 
 int main(int argc, char *argv[]){
 

@@ -10,6 +10,10 @@
 #include "../includes/interpreter.h"
 #include "../includes/hashtables.h"
 
+extern GHashTable* users_table;
+extern GHashTable* drivers_table;
+extern GHashTable* rides_table;
+
 void precoMedioViagens_cidade(char* city,int N,char* filepointer){
     int i=1; double preco_viagem=0; int n_viagens=0;
     double preco_medio=0;
