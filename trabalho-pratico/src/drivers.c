@@ -1,6 +1,5 @@
-#include "../includes/hashtables.h"
-#include "../includes/parse_drivers.h"
-#include "../includes/parser_func.h"
+#include "../includes/drivers.h"
+#include "../includes/parse_func.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +7,7 @@
 
 #include <glib.h>
 
+GHashTable *drivers_table;
 
 struct driver
 {
@@ -73,31 +73,18 @@ Driver clone_driver(Driver d){
     return aux;
 }
 
+void driver_insert(Driver d){
+    g_hash_table_insert(drivers_table,GINT_TO_POINTER(get_driverId(d)),clone_driver(d));
+}
 
-/**
- * @brief Função que realiza o parsing de todos os ficheiros .csv.
- * 
- * @param line apontador para um espaço em memória onde será guardada a string(linha)
- * 
- */ 
-void parser_drivers(char* line,int num_lines[],char* path){
+int driver_check(int id){
+    if (g_hash_table_contains(drivers_table,GINT_TO_POINTER(id))) return 1;
+    else return 0;
+}
 
-    char driver_path [BUFSIZ];//= malloc(sizeof(path));
-    strcpy(driver_path,path);
-    strcat(driver_path,"/drivers.csv");
-
-    int count = 0;
-    FILE* drivers_data = fopen(driver_path,"r");
-    fgets(line,LINE_SIZE,drivers_data);
-    while(fgets(line,LINE_SIZE,drivers_data)){
-        count++;
-        Driver temp_driver = malloc(sizeof(struct driver));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        parse_drivers(line,temp_driver);
-        driver_insert(temp_driver);
-        free(temp_driver);
-    }
-    fclose(drivers_data);
-    num_lines[1] = count;
+struct driver *get_driverStruct(int id){
+    struct driver *temp = g_hash_table_lookup(drivers_table,GINT_TO_POINTER(id));
+    return temp;
 }
 
 int get_driverId(Driver d){
@@ -136,3 +123,32 @@ char *get_Class(Driver d){
 struct tm get_driverCreated(Driver d){
     return d->created_time;
 }
+
+/**
+ * @brief Função que realiza o parsing de todos os ficheiros .csv.
+ * 
+ * @param line apontador para um espaço em memória onde será guardada a string(linha)
+ * 
+ */ 
+void drivers(char* line,int num_lines[],char* path){
+
+    char driver_path [BUFSIZ];//= malloc(sizeof(path));
+    strcpy(driver_path,path);
+    strcat(driver_path,"/drivers.csv");
+
+    drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
+
+    int count = 0;
+    FILE* drivers_data = fopen(driver_path,"r");
+    fgets(line,LINE_SIZE,drivers_data);
+    while(fgets(line,LINE_SIZE,drivers_data)){
+        count++;
+        Driver temp_driver = malloc(sizeof(struct driver));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
+        parse_drivers(line,temp_driver);
+        driver_insert(temp_driver);
+        free(temp_driver);
+    }
+    fclose(drivers_data);
+    num_lines[1] = count;
+}
+

@@ -1,12 +1,13 @@
-#include "../includes/hashtables.h"
-#include "../includes/parse_rides.h"
-#include "../includes/parser_func.h"
+#include "../includes/rides.h"
+#include "../includes/parse_func.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 #include <glib.h>
+
+GHashTable *rides_table;
 
 struct ride
 {
@@ -74,35 +75,19 @@ Ride clone_ride(Ride r){
     return aux;
 }
 
-/**
- * @brief Função que realiza o parsing de todos os ficheiros .csv.
- * 
- * @param line apontador para um espaço em memória onde será guardada a string(linha)
- * 
- */ 
-void parser_rides(char* line,int num_lines[],char* path){
-
-    char ride_path [BUFSIZ];// malloc(sizeof(path));
-    strcpy(ride_path,path);
-    strcat(ride_path,"/rides.csv");
-
-
-    int count = 0;    
-    FILE* rides_data = fopen(ride_path,"r");
-    fgets(line,LINE_SIZE,rides_data);
-
-    while(fgets(line,LINE_SIZE,rides_data)){ 
-        count++;
-        Ride temp_ride = malloc(sizeof(struct ride));
-        parse_rides(line,temp_ride); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        ride_insert(temp_ride);
-        free(temp_ride);
-
-    }
-    fclose(rides_data);
-    num_lines[2] = count;
+void ride_insert(Ride r){
+    g_hash_table_insert(rides_table,GINT_TO_POINTER(get_rideId(r)),clone_ride(r));
 }
 
+int ride_check(char *id){
+    if (g_hash_table_lookup(rides_table, id)) return 1;
+    else return 0;
+}
+
+struct ride *get_rideStruct(int id){
+    struct ride *temp = g_hash_table_lookup(rides_table,GINT_TO_POINTER(id));
+    return temp;
+}
 
 char *get_RideUsername(Ride r){
     return r->user_username;
@@ -146,4 +131,35 @@ int get_DriverScore(Ride r){
 
 double get_tip(Ride r){
     return r->tip;
+}
+
+
+/**
+ * @brief Função que realiza o parsing de todos os ficheiros .csv.
+ * 
+ * @param line apontador para um espaço em memória onde será guardada a string(linha)
+ * 
+ */ 
+void rides(char* line,int num_lines[],char* path){
+
+    char ride_path [BUFSIZ];// malloc(sizeof(path));
+    strcpy(ride_path,path);
+    strcat(ride_path,"/rides.csv");
+
+    rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
+
+    int count = 0;    
+    FILE* rides_data = fopen(ride_path,"r");
+    fgets(line,LINE_SIZE,rides_data);
+
+    while(fgets(line,LINE_SIZE,rides_data)){ 
+        count++;
+        Ride temp_ride = malloc(sizeof(struct ride));
+        parse_rides(line,temp_ride); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
+        ride_insert(temp_ride);
+        free(temp_ride);
+
+    }
+    fclose(rides_data);
+    num_lines[2] = count;
 }

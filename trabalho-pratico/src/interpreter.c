@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../includes/parse_users.h"
-#include "../includes/parse_drivers.h"
-#include "../includes/parse_rides.h"
+#include "../includes/users.h"
+#include "../includes/drivers.h"
+#include "../includes/rides.h"
 #include "../includes/interpreter.h"
 #include "../includes/profile.h"
 #include "../includes/rideAvr.h"
-#include "../includes/hashtables.h"
 
 #define filenametemplate "../Resultados/command%d_output.txt"
 
@@ -25,12 +24,10 @@ void file_writer(char*filepointer, char* input){
 }
 
 void command_interpreter(char* line,int num_lines[],char* path){
-    char cmd_path [BUFSIZ];//= malloc(sizeof(path));
-    strcpy(cmd_path,path);
-    strcat(cmd_path,"/input.txt");
-    FILE* commands_file = fopen(cmd_path,"r");
+    FILE* commands_file = fopen(path,"r");
     int output_counter = 0;
     char* filepointer, *input;
+
     while(fgets(line,LINE_SIZE,commands_file)){
         output_counter++;// para colocar o numero no ficheiro de output
         char* querie_id = strdup(strsep(&line," ")); // analisa qual a querie a executar
@@ -40,7 +37,6 @@ void command_interpreter(char* line,int num_lines[],char* path){
             filepointer = filename_changer(output_counter); // altera o nome do ficheiro de output (COLOCA-O NA PASTA RESULTADOS)
             input = strdup(strsep(&line,FILE_CSV_DELIM)); // pega no restante texto após o numero da querie e passa à funçao de execuçao da querie (pode requerer parsing posterior dependendo da querie a executar)
             profile(input,num_lines[2],filepointer);
-            
         }
         if(atoi(querie_id) == 2){
             

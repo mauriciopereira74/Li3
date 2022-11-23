@@ -1,5 +1,5 @@
-#ifndef PARSE_RIDES_H
-#define PARSE_RIDES_H
+#ifndef RIDES_H
+#define RIDES_H
 
 #define LINE_SIZE 1000
 #define FILE_CSV_DELIM ";\n"
@@ -10,8 +10,9 @@ typedef struct ride *Ride;
 void debugRide(Ride r);
 void parse_rides (char* line, Ride r);
 Ride clone_ride(Ride r);
-void parser_rides(char* line,int num_lines[],char* path);
-
+void ride_insert(Ride r);
+int ride_check(char *id);
+struct ride *get_rideStruct(int id);
 char *get_RideUsername(Ride r);
 int get_rideId(Ride r);
 int get_rideDriverId(Ride r);
@@ -23,6 +24,8 @@ char *get_RideComment(Ride r);
 int get_UserScore(Ride r);
 int get_DriverScore(Ride r);
 double get_tip(Ride r);
+void rides(char* line,int num_lines[],char* path);
+
 
 #endif
 

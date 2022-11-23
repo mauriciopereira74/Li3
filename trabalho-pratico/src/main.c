@@ -1,8 +1,7 @@
-#include "../includes/parse_users.h"
-#include "../includes/parse_drivers.h"
-#include "../includes/parse_rides.h"
+#include "../includes/users.h"
+#include "../includes/drivers.h"
+#include "../includes/rides.h"
 #include "../includes/interpreter.h"
-#include "../includes/hashtables.h"
 #include "../includes/profile.h"
 
 #include <stdio.h>
@@ -10,10 +9,8 @@
 #include <string.h>
 #include <string.h>
 #include <time.h>
- 
-extern GHashTable* users_table;
-extern GHashTable* drivers_table;
-extern GHashTable* rides_table;
+
+#include <glib.h>
 
 int main(int argc, char *argv[]){
 
@@ -22,14 +19,11 @@ int main(int argc, char *argv[]){
     }
     else{
     int num_lines[3];
-    users_table = g_hash_table_new(g_str_hash, g_str_equal);
-    drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
-    rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
-    parser_users(line,num_lines,argv[1]);
-    parser_drivers(line,num_lines,argv[1]);
-    parser_rides(line,num_lines,argv[1]);
+    users(line,num_lines,argv[1]);
+    drivers(line,num_lines,argv[1]);
+    rides(line,num_lines,argv[1]);
 
 
     //printf("%d/%d/%d\n",num_lines[0],num_lines[1],num_lines[2]);

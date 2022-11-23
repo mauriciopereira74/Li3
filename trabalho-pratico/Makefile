@@ -1,37 +1,52 @@
-CC = gcc 
-CFLAGS = -Wall -ansi `pkg-config --cflags --libs glib-2.0` -I$(IDIR)
-COMPILER=gcc
-HEADERS=libs
-SRC=src
-OBJ=obj
+# Compilador
+CC = gcc
 
-all: main parser hashtables interpreter profile rideAvr
+CFLAGS= -std=gnu99 -Wall -O2 $(shell pkg-config --cflags glib-2.0)
+CFLAGS_T = --std=gnu99 -Wall -O2 $(shell pkg-config --cflags libcpuid) $(shell pkg-config --cflags glib-2.0)
 
-main: $(SRC)/main.c $(HEADERS)/main.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/main.o $(PKG) -c $(SRC)/main.c
+LDFLAGS=$(shell pkg-config --libs glib-2.0) $(shell pkg-config --libs libcpuid) -lm
+LDFLAGS_T=-lm $(shell pkg-config --libs libcpuid) $(shell pkg-config --libs glib-2.0)
 
-parser: $(SRC)/parser.c $(HEADERS)/parser.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/parser.o $(PKG) -c $(SRC)/parser.c
-
-hashtables: $(SRC)/hashtables.c $(HEADERS)/hashtables.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/hashtables.o $(PKG) -c $(SRC)/hashtables.c
-
-interpreter: $(SRC)/interpreter.c $(HEADERS)/interpreter.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/interpreter.o $(PKG) -c $(SRC)/interpreter.c
-
-profile: $(SRC)/profile.c $(HEADERS)/profile.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/profile.o $(PKG) -c $(SRC)/profile.c
-
-rideAvr: $(SRC)/rideAvr.c $(HEADERS)/rideAvr.h
-	$(COMPILER) $(FLAGS) -o $(OBJ)/rideAvr.o $(PKG) -c $(SRC)/rideAvr.c
+INC_DIR=includes
+SRC_DIR=src
 
 
-programa-principal: $(SRC)/main.c $(OBJ)/main.o $(OBJ)/parser.o $(OBJ)/hashtables.o $(OBJ)/interpreter.o $(OBJ)/profile.o $(OBJ)/rideAvr.o
-	$(COMPILER) $(FLAGS) $(OBJ)/parser.o $(OBJ)/hashtables.o $(OBJ)/interpreter.o $(OBJ)/profile.o $(OBJ)/rideAvr.o $(OBJ)/main.o  -o programa-principal
+all: programa-principal
+
+main.o: $(SRC_DIR)/main.c 
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/main.o $(PKG) -c $(SRC_DIR)/main.c
+
+users.o: $(SRC_DIR)/users.c $(INC_DIR)/users.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/users.o $(PKG) -c $(SRC_DIR)/users.c
+
+drivers.o: $(SRC_DIR)/drivers.c $(INC_DIR)/drivers.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/drivers.o $(PKG) -c $(SRC_DIR)/drivers.c
+
+rides.o: $(SRC_DIR)/rides.c $(INC_DIR)/rides.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/rides.o $(PKG) -c $(SRC_DIR)/rides.c
+
+parse_func.o: $(SRC_DIR)/parse_func.c $(INC_DIR)/parse_func.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/parse_func.o $(PKG) -c $(SRC_DIR)/parse_func.c
+
+hashtables.o: $(SRC_DIR)/hashtables.c $(INC_DIR)/hashtables.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/hashtables.o $(PKG) -c $(SRC_DIR)/hashtables.c
+
+interpreter.o: $(SRC_DIR)/interpreter.c $(INC_DIR)/interpreter.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/interpreter.o $(PKG) -c $(SRC_DIR)/interpreter.c
+
+profile.o: $(SRC_DIR)/profile.c $(INC_DIR)/profile.h
+	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/profile.o $(PKG) -c $(SRC_DIR)/profile.c
+
+rideAvr.o: $(SRC_DIR)/rideAvr.c $(INC_DIR)/rideAvr.h
+	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/rideAvr.o $(PKG) -c $(SRC_DIR)/rideAvr.c
+
+
+programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o  $(SRC_DIR)/hashtables.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o
+	$(CC) $(CFLAGS) $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o  $(SRC_DIR)/hashtables.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/main.o $(PKG) -o ./programa-principal
 
 
 memcheck:
 	valgrind --leak-check=yes -s ./programa-principal
 
 clean:
-	rm -rf $(OBJ)/*.o programa-principal
+	rm -rf $(SRC_DIR)/*.o programa-principal

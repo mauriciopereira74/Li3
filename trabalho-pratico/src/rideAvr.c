@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "../includes/parse_users.h"
-#include "../includes/parse_drivers.h"
-#include "../includes/parse_rides.h"
+#include "../includes/users.h"
+#include "../includes/drivers.h"
+#include "../includes/rides.h"
 #include "../includes/interpreter.h"
-#include "../includes/hashtables.h"
+
+#include <glib.h>
 
 extern GHashTable* users_table;
 extern GHashTable* drivers_table;

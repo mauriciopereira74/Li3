@@ -1,12 +1,13 @@
-#include "../includes/hashtables.h"
-#include "../includes/parse_users.h"
-#include "../includes/parser_func.h"
+#include "../includes/users.h"
+#include "../includes/parse_func.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 #include <glib.h>
+
+GHashTable *users_table;
 
 struct user
 {
@@ -63,32 +64,19 @@ User clone_user(User u){
     return aux;
 }
 
-/**
- * @brief Função que realiza o parsing de todos os ficheiros .csv.
- * 
- * @param line apontador para um espaço em memória onde será guardada a string(linha)
- * 
- */ 
-void parser_users(char* line,int num_lines[],char* path){
-
-    char user_path [BUFSIZ];//= malloc(sizeof(path));
-    strcpy(user_path,path);
-    strcat(user_path,"/users.csv");
-
-    int count = 0;
-    FILE* users_data = fopen(user_path,"r");
-    fgets(line,LINE_SIZE,users_data);
-    while(fgets(line,LINE_SIZE,users_data)){
-        count++;
-        User temp_user = malloc(sizeof(struct user));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        parse_users(line,temp_user);
-        user_insert(temp_user);
-        free(temp_user);
-    }
-    fclose(users_data);
-    num_lines[0] = count;
+void user_insert(User u){
+    g_hash_table_insert(users_table,get_username(u),clone_user(u));
 }
 
+int user_check(char *name){
+    if (g_hash_table_lookup(users_table,name)) return 1;
+    else return 0;
+}
+
+struct user *get_userStruct(char *name){
+    struct user *temp = g_hash_table_lookup(users_table,name);
+    return temp;
+}
 
 char * get_username(User u){
     return u->username;
@@ -116,3 +104,32 @@ char *get_userPayMethod(User u){
 char *get_userStatus(User u){
     return u->Acc_Status;
 }
+
+/**
+ * @brief Função que realiza o parsing de todos os ficheiros .csv.
+ * 
+ * @param line apontador para um espaço em memória onde será guardada a string(linha)
+ * 
+ */ 
+void users(char* line,int num_lines[],char* path){
+
+    char user_path [BUFSIZ];//= malloc(sizeof(path));
+    strcpy(user_path,path);
+    strcat(user_path,"/users.csv");
+
+    users_table = g_hash_table_new(g_str_hash, g_str_equal);
+
+    int count = 0;
+    FILE* users_data = fopen(user_path,"r");
+    fgets(line,LINE_SIZE,users_data);
+    while(fgets(line,LINE_SIZE,users_data)){
+        count++;
+        User temp_user = malloc(sizeof(struct user));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
+        parse_users(line,temp_user);
+        user_insert(temp_user);
+        free(temp_user);
+    }
+    fclose(users_data);
+    num_lines[0] = count;
+}
+
