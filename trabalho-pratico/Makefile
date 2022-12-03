@@ -28,9 +28,6 @@ rides.o: $(SRC_DIR)/rides.c $(INC_DIR)/rides.h
 parse_func.o: $(SRC_DIR)/parse_func.c $(INC_DIR)/parse_func.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/parse_func.o $(PKG) -c $(SRC_DIR)/parse_func.c
 
-hashtables.o: $(SRC_DIR)/hashtables.c $(INC_DIR)/hashtables.h
-	$(CC) $(CFLAGS) -o $(SRC_DIR)/hashtables.o $(PKG) -c $(SRC_DIR)/hashtables.c
-
 interpreter.o: $(SRC_DIR)/interpreter.c $(INC_DIR)/interpreter.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/interpreter.o $(PKG) -c $(SRC_DIR)/interpreter.c
 
@@ -41,8 +38,8 @@ rideAvr.o: $(SRC_DIR)/rideAvr.c $(INC_DIR)/rideAvr.h
 	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/rideAvr.o $(PKG) -c $(SRC_DIR)/rideAvr.c
 
 
-programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o  $(SRC_DIR)/hashtables.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o
-	$(CC) $(CFLAGS) $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o  $(SRC_DIR)/hashtables.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/main.o $(PKG) -o ./programa-principal
+programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o
+	$(CC) $(CFLAGS) $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/main.o $(PKG) -o ./programa-principal
 
 
 memcheck:
