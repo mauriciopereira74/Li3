@@ -17,11 +17,10 @@
 
 
 int age(struct tm birth_date){
-    int birth_year= birth_date.tm_year;
 
-    
+    int birth_year= birth_date.tm_year;    
     int final_year = REF_YEAR - birth_year;
-
+    
     if(REF_MON < birth_date.tm_mon){
 
         final_year--;
@@ -31,6 +30,7 @@ int age(struct tm birth_date){
             final_year--;
         }
     }
+
     return final_year;
 }
 

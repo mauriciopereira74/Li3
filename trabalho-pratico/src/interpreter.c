@@ -42,7 +42,7 @@ void command_interpreter(char* line,int num_lines[],char* path){
             
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
-            //nDrivers(atoi(input));
+            //listDrivers(input,num_lines[2],filepointer);
 
         }
         if(atoi(querie_id) == 3){
@@ -83,6 +83,7 @@ void command_interpreter(char* line,int num_lines[],char* path){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
+            listRides(input,num_lines[2],filepointer);
             
         }
         if(atoi(querie_id) == 9){

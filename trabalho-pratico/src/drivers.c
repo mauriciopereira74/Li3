@@ -1,4 +1,6 @@
 #include "../includes/drivers.h"
+#include "../includes/rides.h"
+#include "../includes/list.h"
 #include "../includes/parse_func.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -120,7 +122,7 @@ char *get_Class(Driver d){
     return d->Class;
 }
 
-struct tm get_driverCreated(Driver d){
+struct tm get_driverCreateTime(Driver d){
     return d->created_time;
 }
 
@@ -137,6 +139,7 @@ void drivers(char* line,int num_lines[],char* path){
     strcat(driver_path,"/drivers.csv");
 
     drivers_table= g_hash_table_new(g_direct_hash, g_direct_equal);
+    struct list *driversRate[1500];
 
     int count = 0;
     FILE* drivers_data = fopen(driver_path,"r");
@@ -146,9 +149,29 @@ void drivers(char* line,int num_lines[],char* path){
         Driver temp_driver = malloc(sizeof(struct driver));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         parse_drivers(line,temp_driver);
         driver_insert(temp_driver);
+
+            int avaliacao_total=0,n_viagens=0;
+                for(int i=1;i<=num_lines[2];i++){
+                    struct ride *r= get_rideStruct(i);
+                    if(get_rideDriverId(r) == get_driverId(temp_driver)){
+                        avaliacao_total= avaliacao_total + get_DriverScore(r);
+                        n_viagens++;
+                    }
+                }
+            double avaliacao_media=avaliacao_total/(double)n_viagens;
+            struct list *l = malloc(sizeof(List));
+            set_ListDriverID(l,get_driverId(temp_driver));
+            set_ListDriverName(l,get_driverName(temp_driver));
+            set_ListAvaliacaoMedia(l,avaliacao_media);
+            int k=0;
+            driversRate[k]=l;
+            //printf("%d %s %f\n",get_ListDriverID(driversRate[k]),get_ListDriverName(driversRate[k]),get_ListAvaliacaoMedia(driversRate[k]));
+            k++;
+
         free(temp_driver);
     }
     fclose(drivers_data);
     num_lines[1] = count;
 }
+
 

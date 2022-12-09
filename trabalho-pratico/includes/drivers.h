@@ -34,7 +34,7 @@ char *get_driverStatus(Driver d);
 struct tm get_driverBirth(Driver d);
 char *get_driverGender(Driver d);
 char *get_Class(Driver d);
-struct tm get_driverCreated(Driver d);
+struct tm get_driverCreateTime(Driver d);
 void drivers(char* line,int num_lines[],char* path);
 
 

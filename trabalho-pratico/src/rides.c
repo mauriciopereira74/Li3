@@ -1,4 +1,6 @@
 #include "../includes/rides.h"
+#include "../includes/drivers.h"
+#include "../includes/list.h"
 #include "../includes/parse_func.h"
 #include <stdio.h>
 #include <stdlib.h>
