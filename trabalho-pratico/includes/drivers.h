@@ -5,6 +5,8 @@
 #define FILE_CSV_DELIM ";\n"
 #define DATE_DELIM     "/\n"
 
+#include <glib.h>
+
 
 /**
  * @brief Types of Car Classes.
@@ -23,9 +25,9 @@ typedef struct driver *Driver;
 void debugDriver(Driver d);
 void parse_drivers (char* line, Driver d);
 Driver clone_driver(Driver d);
-void driver_insert(Driver d);
-int driver_check(int id);
-struct driver *get_driverStruct(int id);
+void driver_insert(GHashTable *drivers_table,Driver d);
+int driver_check(GHashTable *drivers_table,int id);
+struct driver *get_driverStruct(GHashTable *drivers_table,int id);
 int get_driverId(Driver d);
 char *get_licensePlate(Driver d);
 char *get_driverName(Driver d);
@@ -35,7 +37,7 @@ struct tm get_driverBirth(Driver d);
 char *get_driverGender(Driver d);
 char *get_Class(Driver d);
 struct tm get_driverCreateTime(Driver d);
-void drivers(char* line,int num_lines[],char* path);
+GHashTable *drivers(char* line,int num_lines[],char* path);
 
 
 #endif

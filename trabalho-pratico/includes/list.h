@@ -36,5 +36,6 @@ void set_ListUserName(List l, char *user_name);
 
 void set_ListAvaliacaoMedia(List l, double avaliacaoMedia);
 
+List clone_list(List l);
 
 #endif

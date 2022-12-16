@@ -5,6 +5,8 @@
 #define FILE_CSV_DELIM ";\n"
 #define DATE_DELIM     "/\n"
 
+#include <glib.h>
+
 
 /**
  * @brief Types of Account Status.
@@ -18,9 +20,9 @@ typedef struct user *User;
 void debugUser(User u);
 void parse_users(char* line,User u);
 User clone_user(User u);
-void user_insert(User u);
-int user_check(char *name);
-struct user *get_userStruct(char *name);
+void user_insert(GHashTable *users_table,User u);
+int user_check(GHashTable *users_table,char *name);
+struct user *get_userStruct(GHashTable *users_table,char *name);
 char * get_username(User u);
 char *get_name(User u);
 char *get_userGender(User u);
@@ -28,7 +30,7 @@ struct tm get_userBirth(User u);
 struct tm get_userCreateTime(User u);
 char *get_userPayMethod(User u);
 char *get_userStatus(User u);
-void users(char* line,int num_lines[],char* path);
+GHashTable *users(char* line,int num_lines[],char* path);
 
 
 #endif

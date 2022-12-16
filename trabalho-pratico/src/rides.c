@@ -9,8 +9,6 @@
 
 #include <glib.h>
 
-GHashTable *rides_table;
-
 struct ride
 {
     
@@ -77,16 +75,16 @@ Ride clone_ride(Ride r){
     return aux;
 }
 
-void ride_insert(Ride r){
+void ride_insert(GHashTable *rides_table,Ride r){
     g_hash_table_insert(rides_table,GINT_TO_POINTER(get_rideId(r)),clone_ride(r));
 }
 
-int ride_check(char *id){
+int ride_check(GHashTable *rides_table, char *id){
     if (g_hash_table_lookup(rides_table, id)) return 1;
     else return 0;
 }
 
-struct ride *get_rideStruct(int id){
+struct ride *get_rideStruct(GHashTable *rides_table, int id){
     struct ride *temp = g_hash_table_lookup(rides_table,GINT_TO_POINTER(id));
     return temp;
 }
@@ -142,13 +140,13 @@ double get_tip(Ride r){
  * @param line apontador para um espaço em memória onde será guardada a string(linha)
  * 
  */ 
-void rides(char* line,int num_lines[],char* path){
+GHashTable *rides(char* line,int num_lines[],char* path){
 
     char ride_path [BUFSIZ];// malloc(sizeof(path));
     strcpy(ride_path,path);
     strcat(ride_path,"/rides.csv");
 
-    rides_table= g_hash_table_new(g_direct_hash, g_direct_equal);
+    GHashTable *rides_table = g_hash_table_new(g_direct_hash, g_direct_equal);
 
     int count = 0;    
     FILE* rides_data = fopen(ride_path,"r");
@@ -158,10 +156,12 @@ void rides(char* line,int num_lines[],char* path){
         count++;
         Ride temp_ride = malloc(sizeof(struct ride));
         parse_rides(line,temp_ride); // a funçao retorna cada struct Ride criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        ride_insert(temp_ride);
+        ride_insert(rides_table,temp_ride);
         free(temp_ride);
 
     }
     fclose(rides_data);
     num_lines[2] = count;
+
+    return rides_table;
 }

@@ -8,6 +8,8 @@
 #include "../includes/profile.h"
 #include "../includes/rideAvr.h"
 
+#include <glib.h>
+
 #define filenametemplate "../Resultados/command%d_output.txt"
 
 char* filename_changer(int filecounter){
@@ -23,10 +25,14 @@ void file_writer(char*filepointer, char* input){
     fclose(resultado);
 }
 
-void command_interpreter(char* line,int num_lines[],char* path){
+void command_interpreter(char* line,int num_lines[],char* parserPath,char* path){
     FILE* commands_file = fopen(path,"r");
     int output_counter = 0;
     char* filepointer, *input;
+
+    GHashTable *rides_table = rides(line,num_lines,parserPath);
+    GHashTable *users_table = users(line,num_lines,parserPath);
+    GHashTable *drivers_table = drivers(line,num_lines,parserPath);
 
     while(fgets(line,LINE_SIZE,commands_file)){
         output_counter++;// para colocar o numero no ficheiro de output
@@ -36,7 +42,7 @@ void command_interpreter(char* line,int num_lines[],char* path){
         
             filepointer = filename_changer(output_counter); // altera o nome do ficheiro de output (COLOCA-O NA PASTA RESULTADOS)
             input = strdup(strsep(&line,FILE_CSV_DELIM)); // pega no restante texto após o numero da querie e passa à funçao de execuçao da querie (pode requerer parsing posterior dependendo da querie a executar)
-            profile(input,num_lines[2],filepointer);
+            profile(input,num_lines[2],filepointer,users_table,drivers_table,rides_table);
         }
         if(atoi(querie_id) == 2){
             
@@ -56,21 +62,21 @@ void command_interpreter(char* line,int num_lines[],char* path){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
-            precoMedioViagens_cidade(input,num_lines[2],filepointer);
+            precoMedioViagens_cidade(input,num_lines[2],filepointer,drivers_table,rides_table);
             
         }
         if(atoi(querie_id) == 5){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
-            precoMedioViagens_datas(input,num_lines[2],filepointer);
+            precoMedioViagens_datas(input,num_lines[2],filepointer,drivers_table,rides_table);
             
         }
         if(atoi(querie_id) == 6){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
-            distanciaMedia(input,num_lines[2],filepointer);
+            distanciaMedia(input,num_lines[2],filepointer,rides_table);
             
         }
         if(atoi(querie_id) == 7){
@@ -83,7 +89,7 @@ void command_interpreter(char* line,int num_lines[],char* path){
 
             filepointer = filename_changer(output_counter);
             input = strdup(strsep(&line,FILE_CSV_DELIM));
-            listRides(input,num_lines[2],filepointer);
+            listRides(input,num_lines[2],filepointer,users_table,drivers_table,rides_table);
             
         }
         if(atoi(querie_id) == 9){

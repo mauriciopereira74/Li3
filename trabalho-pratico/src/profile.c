@@ -35,12 +35,12 @@ int age(struct tm birth_date){
 }
 
 
-void profile(char *id_s,int N,char* filepointer){
+void profile(char *id_s,int N,char* filepointer,GHashTable *users_table,GHashTable *drivers_table,GHashTable *rides_table){
     int flag = 1;
     char ptr[BUFSIZ];
     int id= atoi(id_s);
-    if(driver_check(id)==1){
-        struct driver *d = get_driverStruct(id);
+    if(driver_check(drivers_table,id)==1){
+        struct driver *d = get_driverStruct(drivers_table,id);
 
         if(strcmp(get_driverStatus(d),"active")==0){
             int avaliacao_total=0; int n_viagens=0;
@@ -48,7 +48,7 @@ void profile(char *id_s,int N,char* filepointer){
 
             int i= 1;
             for(;i<=N;i++){
-                struct ride *r= get_rideStruct(i);
+                struct ride *r= get_rideStruct(rides_table,i);
                 if(get_rideDriverId(r)==id){
                     avaliacao_total= avaliacao_total + get_DriverScore(r);
                     n_viagens++;
@@ -67,9 +67,9 @@ void profile(char *id_s,int N,char* filepointer){
         }
     }
 
-    else if(user_check(id_s)==1){
+    else if(user_check(users_table,id_s)==1){
         
-        struct user *u = get_userStruct(id_s);
+        struct user *u = get_userStruct(users_table,id_s);
 
         if(strcmp(get_userStatus(u),"active")==0){
 
@@ -78,12 +78,12 @@ void profile(char *id_s,int N,char* filepointer){
 
             int i= 1;
             for(;i<=N;i++){
-                struct ride *r= get_rideStruct(i);
+                struct ride *r= get_rideStruct(rides_table,i);
                 if(strcmp(get_RideUsername(r),id_s)==0){
                     avaliacao_total= avaliacao_total + get_UserScore(r);
                     n_viagens++;
 
-                    struct driver *d= get_driverStruct(get_rideDriverId(r));
+                    struct driver *d= get_driverStruct(drivers_table,get_rideDriverId(r));
                     
                     if(strcmp(get_Class(d),"basic")==0) total_gasto += 3.25 + 0.62 *get_RideDistance(r) + get_tip(r);
                     else if(strcmp(get_Class(d),"green")==0) total_gasto +=  4.00+ 0.79*get_RideDistance(r) + get_tip (r);

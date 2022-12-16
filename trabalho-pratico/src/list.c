@@ -21,7 +21,7 @@ struct list
          *user_username,
          *user_name;
     
-    double avaliaçao_media;
+    double avaliacao_media;
 } ;
 
 
@@ -54,7 +54,7 @@ char *get_ListUserName(List l){
 }
 
 double get_ListAvaliacaoMedia(List l){
-    return l->avaliaçao_media;
+    return l->avaliacao_media;
 }
 
 void set_ListDriverID(List l, int driverID){
@@ -86,5 +86,11 @@ void set_ListUserName(List l, char *user_name){
 }
 
 void set_ListAvaliacaoMedia(List l, double avaliacaoMedia){
-    l->avaliaçao_media=avaliacaoMedia;
+    l->avaliacao_media=avaliacaoMedia;
+}
+
+List clone_list(List l){
+    List aux = malloc(sizeof(struct list));
+    memcpy(aux,l,sizeof(struct list));
+    return aux;
 }
