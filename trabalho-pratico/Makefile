@@ -28,6 +28,12 @@ rides.o: $(SRC_DIR)/rides.c $(INC_DIR)/rides.h
 parse_func.o: $(SRC_DIR)/parse_func.c $(INC_DIR)/parse_func.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/parse_func.o -c $(SRC_DIR)/parse_func.c $(LDFLAGS)
 
+interface_func.o: $(SRC_DIR)/interface_func.c $(INC_DIR)/interface_func.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/interface_func.o -c $(SRC_DIR)/interface_func.c $(LDFLAGS)
+
+user_interface.o: $(SRC_DIR)/user_interface.c $(INC_DIR)/user_interface.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/user_interface.o -c $(SRC_DIR)/user_interface.c $(LDFLAGS)
+
 interpreter.o: $(SRC_DIR)/interpreter.c $(INC_DIR)/interpreter.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/interpreter.o -c $(SRC_DIR)/interpreter.c $(LDFLAGS)
 
@@ -40,8 +46,8 @@ rideAvr.o: $(SRC_DIR)/rideAvr.c $(INC_DIR)/rideAvr.h
 list.o: $(SRC_DIR)/list.c $(INC_DIR)/list.h
 	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/list.o -c $(SRC_DIR)/list.c $(LDFLAGS)
 
-programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o
-	$(CC) $(CFLAGS) $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o -o ./programa-principal $(LDFLAGS)
+programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interface_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interface_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o -o ./programa-principal $(LDFLAGS)
 
 
 memcheck:

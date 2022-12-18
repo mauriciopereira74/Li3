@@ -3,6 +3,7 @@
 #include "../includes/rides.h"
 #include "../includes/interpreter.h"
 #include "../includes/profile.h"
+#include "../includes/user_interface.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +22,9 @@ int main(int argc, char *argv[]){
     int num_lines[3];
 
     char* line = malloc(sizeof(char) * LINE_SIZE);
-    
     command_interpreter(line,num_lines,argv[1],argv[2]);
-    return 0;
+    interface();
+    free(line);
     }
+    return 0;
 }

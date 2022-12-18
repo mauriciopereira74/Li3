@@ -45,7 +45,45 @@ void debugDriver(Driver d){
     
 }
 
+int validateDateDriver(char* field, Driver d, int N){
+    int r = 1;
+    int day,mon,year;
+    int date_format = sscanf(field,"%d/%d/%d",&day,&mon,&year);
+    if(date_format != 3 && 1 > day && day > 31 && 1 > mon && mon > 12 && 1 > year && year > 2022 && strlen(field) != 10 && (N != 1 || N != 2)){
+        r = 0;
+    }
+    else{
+        if(N == 1){
+            d->birth_date.tm_mday = day;
+            d->birth_date.tm_mon = mon;
+            d->birth_date.tm_year = year;
+        }
+        else if(N == 2){
+            d->created_time.tm_mday = day;
+            d->created_time.tm_mon = mon;
+            d->created_time.tm_year = year;
+        }
+    }
+    return r;
+}
 
+int validateIdDriver(char *field,Driver d) {
+    int r = 1;
+	char *p = field;
+	if (p[0] == '\0' || p[0] == '-')
+		r = 0;
+	while (*p)
+	{
+		if (*p < '0' || *p > '9')	
+			r = 0;
+		p++;
+	}
+
+    if(r != 0){
+        d->id = atoi(field);
+    }
+	return r;
+}
 
 /**
  * 
@@ -55,17 +93,29 @@ void debugDriver(Driver d){
  * 
  */
 
-void parse_drivers (char* line, Driver d){
-    d->id               = atoi(strdup(strsep(&line,FILE_CSV_DELIM)));
+int parse_drivers (char* line, Driver d){
+    int r = 1;
+    char* birth_date, *created_time, *id;
+
+    id                  = strdup(strsep(&line,FILE_CSV_DELIM));
     d->name             = strdup(strsep(&line,FILE_CSV_DELIM));
-    d->birth_date       = date_parse(strdup(strsep(&line,FILE_CSV_DELIM)));
+    birth_date          = strdup(strsep(&line,FILE_CSV_DELIM));
     d->gender           = strdup(strsep(&line,FILE_CSV_DELIM));
     d->Class            = strdup(strsep(&line,FILE_CSV_DELIM));
     d->license_plate    = strdup(strsep(&line,FILE_CSV_DELIM));
     d->city             = strdup(strsep(&line,FILE_CSV_DELIM));
-    d->created_time     = date_parse(strdup(strsep(&line,FILE_CSV_DELIM)));
+    created_time        = strdup(strsep(&line,FILE_CSV_DELIM));
     d->Acc_Status       = strdup(strsep(&line,FILE_CSV_DELIM));
 
+    if (validateIdDriver(id,d) == 0 || validateStrFields(d->name) == 0 || 
+        validateStrFields(d->gender) == 0  || validateStrFields(d->license_plate) == 0 || validateStrFields(d->city) == 0||
+        validateDateDriver(birth_date,d,1) == 0 || validateDateDriver(created_time,d,2) == 0 || validateEnumTypes(d->Acc_Status) == 0 ||
+        validateEnumTypes(d->Class) == 0){ // unfinished
+        free(d);
+        r = 0;
+    }
+
+    return r;
 }
 
 Driver clone_driver(Driver d){
@@ -143,11 +193,15 @@ GHashTable *drivers(char* line,int num_lines[],char* path){
     int count = 0;
     FILE* drivers_data = fopen(driver_path,"r");
     fgets(line,LINE_SIZE,drivers_data);
+    
     while(fgets(line,LINE_SIZE,drivers_data)){
         count++;
         Driver temp_driver = malloc(sizeof(struct driver));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
-        parse_drivers(line,temp_driver);
-        driver_insert(drivers_table,temp_driver);
+        int is_driver_inserted = parse_drivers(line,temp_driver);
+        if(is_driver_inserted == 1){
+            driver_insert(drivers_table,temp_driver);
+            free(temp_driver);
+        }
 /* 
             int avaliacao_total=0,n_viagens=0;
                 for(int i=1;i<=num_lines[2];i++){
@@ -168,7 +222,6 @@ GHashTable *drivers(char* line,int num_lines[],char* path){
             printf("%d %s %f\n",get_ListDriverID(driversRate[k]),get_ListDriverName(driversRate[k]),get_ListAvaliacaoMedia(driversRate[k]));
             k++;
             */
-        free(temp_driver);
     }
     fclose(drivers_data);
     num_lines[1] = count;

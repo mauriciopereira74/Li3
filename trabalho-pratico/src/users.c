@@ -35,28 +35,27 @@ void debugUser(User u){
     printf("Account Status: %s\n ",u->Acc_Status);
 }
 
-int validateStrFields(char* field){
-    r = 1;
-    if (strlen(field) == 0){
-        r = 0;
-    }
-    return r;
-}
-
-int validateDate(char* field,struct tm dest){
-    r = 1;
+int validateDateUser(char* field,User u,int N){
+    int r = 1;
     int day,mon,year;
     int date_format = sscanf(field,"%d/%d/%d",&day,&mon,&year);
-
-    if(date_format == 3 && 1 <= day <= 31 && 1 <= mon <= 12 && 1 <= year <= 2022){
-        dest = date_parse(field);
+    if(date_format != 3 && 1 > day && day > 31 && 1 > mon && mon > 12 && 1 > year && year > 2022 && strlen(field) != 10 && (N != 1 || N != 2)){
+        r = 0;
     }
     else{
-        r = 0;
+        if(N == 1){
+            u->birth_date.tm_mday = day;
+            u->birth_date.tm_mon = mon;
+            u->birth_date.tm_year = year;
+        }
+        else if(N == 2){
+            u->created_time.tm_mday = day;
+            u->created_time.tm_mon = mon;
+            u->created_time.tm_year = year;
+        }
     }
     return r;
 }
-
 
 /**
  * 
@@ -67,7 +66,7 @@ int validateDate(char* field,struct tm dest){
  */
 
 int parse_users(char* line,User u){
-    r = 1;
+    int r = 1;
     char* birth_date, *created_time;
     u->username         = strdup(strsep(&line,FILE_CSV_DELIM));
     u->name             = strdup(strsep(&line,FILE_CSV_DELIM));
@@ -77,11 +76,10 @@ int parse_users(char* line,User u){
     u->pay_method       = strdup(strsep(&line,FILE_CSV_DELIM)); // could be type enum
     u->Acc_Status       = strdup(strsep(&line,FILE_CSV_DELIM));
 
-    int flag = 0;
-
     if (validateStrFields(u->username) == 0 || validateStrFields(u->name) == 0 || 
         validateStrFields(u->gender) == 0  || validateStrFields(u->pay_method) == 0 ||
-        validateDate(birth_date,u->birth_date) || validateDate(created_time,u->created_time)){ // unfinished
+        validateDateUser(birth_date,u,1) == 0 || validateDateUser(created_time,u,2)==0 || validateEnumTypes(u->Acc_Status) == 0){ // unfinished
+        printf("ardeu\n");
         free(u);
         r = 0;
     }
@@ -147,17 +145,18 @@ GHashTable *users(char* line,int num_lines[],char* path){
     strcpy(user_path,path);
     strcat(user_path,"/users.csv");
 
-    GHashTable *users_table = g_hash_table_new(g_str_hash, g_str_equal);
+    GHashTable *users_table = g_hash_table_new_full(g_str_hash, g_str_equal,NULL,g_free);
 
     int count = 0;
     FILE* users_data = fopen(user_path,"r");
     fgets(line,LINE_SIZE,users_data);
+    
     while(fgets(line,LINE_SIZE,users_data)){
         count++;
         User temp_user = malloc(sizeof(struct user));// a funçao retorna cada struct User criada por isso a importaçao para a hashtable deve ser feita dentro de cada ciclo while i guess
         int is_user_inserted = parse_users(line,temp_user);
-        user_insert(users_table,temp_user);
         if (is_user_inserted == 1){
+            user_insert(users_table,temp_user);
             free(temp_user); // este free so ocorre quando o user é valido por isso nao leva free no parse_users e foi inserido na hash
         }
     }

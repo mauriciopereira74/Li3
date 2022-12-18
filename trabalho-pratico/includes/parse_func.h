@@ -6,5 +6,7 @@
 #define DATE_DELIM     "/\n"
 
 struct tm date_parse(char* line);
-
+int validateStrFields(char* field);
+int validateEnumTypes(char* field);
+int ValidateCaps(char* field);
 #endif

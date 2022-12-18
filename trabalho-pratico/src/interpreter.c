@@ -33,8 +33,9 @@ void command_interpreter(char* line,int num_lines[],char* parserPath,char* path)
     GHashTable *rides_table = rides(line,num_lines,parserPath);
     GHashTable *users_table = users(line,num_lines,parserPath);
     GHashTable *drivers_table = drivers(line,num_lines,parserPath);
-
+    
     while(fgets(line,LINE_SIZE,commands_file)){
+
         output_counter++;// para colocar o numero no ficheiro de output
         char* querie_id = strdup(strsep(&line," ")); // analisa qual a querie a executar
         
@@ -100,6 +101,9 @@ void command_interpreter(char* line,int num_lines[],char* parserPath,char* path)
         }
 
     }
+    g_hash_table_destroy(drivers_table);
+    g_hash_table_destroy(rides_table);
+    g_hash_table_destroy(users_table);
     fclose(commands_file);
     free(line);
 }

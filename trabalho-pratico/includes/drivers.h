@@ -23,7 +23,7 @@ typedef struct driver *Driver;
 
 
 void debugDriver(Driver d);
-void parse_drivers (char* line, Driver d);
+int parse_drivers (char* line, Driver d);
 Driver clone_driver(Driver d);
 void driver_insert(GHashTable *drivers_table,Driver d);
 int driver_check(GHashTable *drivers_table,int id);
@@ -38,6 +38,8 @@ char *get_driverGender(Driver d);
 char *get_Class(Driver d);
 struct tm get_driverCreateTime(Driver d);
 GHashTable *drivers(char* line,int num_lines[],char* path);
+int validateIdDriver(char *field,Driver d);
+int validateDateDriver(char* field, Driver d, int N);
 
 
 #endif

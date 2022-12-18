@@ -29,6 +29,7 @@ void precoMedioViagens_cidade(char* city,int N,char* filepointer,GHashTable *dri
     preco_medio=preco_viagem/(double)n_viagens;
     sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
+    free(ptr);
 }
 
 int check_dates(int day,int mon, int year,struct tm date){ // return 1 se date_recebido for depois de date ; return -1 se date_recebido for antes de date; return 0 se forem iguais
@@ -85,6 +86,7 @@ void precoMedioViagens_datas(char *datas,int N,char* filepointer,GHashTable *dri
     preco_medio=preco_viagem/(double)n_viagens;
     sprintf(ptr,"%.3f\n",preco_medio);
     file_writer(filepointer,ptr);
+    free(ptr);
 }
 
 void distanciaMedia(char *input,int N,char* filepointer,GHashTable *rides_table){  // querie 6
@@ -120,35 +122,14 @@ void distanciaMedia(char *input,int N,char* filepointer,GHashTable *rides_table)
     distancia_media = distancia_total/(double)n_viagens;
     sprintf(ptr,"%.3f\n",distancia_media);
     file_writer(filepointer,ptr);
+    free(ptr);
 }
-/*
-void exactly_age(struct tm birth_date){
-
-    int REF_DAY = 9;
-    int REF_MON = 10;
-    int REF_YEAR = 2022;
-
-    int month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    if (birth_date.tm_mday > REF_DAY) {
-        REF_DAY += month[birth_date.tm_mon - 1];
-        REF_MON--;
-    }
-    if (birth_date.tm_mon > REF_MON) {
-        REF_YEAR--;
-        REF_MON += 12;
-    }
-
-    int final_date = REF_DAY - birth_date.tm_mday;
-    int final_month = REF_MON - birth_date.tm_mon;
-    int final_year = REF_YEAR - birth_date.tm_year;
-}
-*/
 
 int compareWantedRides(const void *l1,const void *l2){
 
     List r1 = (List) l1;
     List r2 = (List) l2;
-    printf("entrei no sort\n");
+    int r=0;
     int accAgeDriverl1 = age(get_ListAccAge_driver(r1));
     int accAgeDriverl2 = age(get_ListAccAge_driver(r2));
     int accAgeUserl1 = age(get_ListAccAge_user(r1));
@@ -156,55 +137,66 @@ int compareWantedRides(const void *l1,const void *l2){
 
     if(accAgeDriverl1 == accAgeDriverl2){
         if(accAgeUserl1 > accAgeUserl2){
-            return accAgeUserl1 - accAgeUserl2;
+            r = accAgeUserl1 - accAgeUserl2;
         }
     }
     else{
-        return accAgeDriverl1 - accAgeDriverl2;
+        r = accAgeDriverl1 - accAgeDriverl2;
     }
+    return r;
 }
 
 
+void fill_ht_rides(GHashTable* ht_rides, int id,List l){
+    g_hash_table_insert(ht_rides, GINT_TO_POINTER(id) , clone_list(l));
+}
 
 void listRides(char *input,int N,char* filepointer,GHashTable *users_table,GHashTable *drivers_table,GHashTable *rides_table){
 
     char *gender =strtok(input," ");
     char *idade_ref = strtok(NULL," ");
-    List *wanted_rides = malloc(1500 * sizeof(List));
     int j=0;
+
+    GHashTable *list_rides = g_hash_table_new(g_direct_hash,g_direct_equal);
 
     for(int i=1;i<=N;i++){
         struct ride *r= get_rideStruct(rides_table,i);
         struct driver *d = get_driverStruct(drivers_table,get_rideDriverId(r));
         struct user *u = get_userStruct(users_table,get_RideUsername(r));
-
-        //printf("D-> %s ",get_driverGender(d));
         //printf("U-> %s\n",get_userGender(u));
-        if (strcmp(get_driverGender(d),get_userGender(u))==0 && strcmp(get_driverGender(d),gender)==0 && age(get_driverCreateTime(d))>= atoi(idade_ref) && age(get_userCreateTime(u))>= atoi(idade_ref) ){
+        if (strcmp(get_driverGender(d),get_userGender(u))==0 && strcmp(get_driverGender(d),gender)==0 && age(get_driverCreateTime(d))>= atoi(idade_ref) && age(get_userCreateTime(u))>= atoi(idade_ref)){
             struct list *l = malloc(sizeof(List));
-            
             set_ListDriverID(l,get_driverId(d));
             set_ListDriverName(l,get_driverName(d));
             set_ListUserUsername(l,get_username(u));
             set_ListUserName(l,get_name(u));
             set_ListAccAgeDriver(l,get_driverCreateTime(d));
             set_ListAccAgeUser(l,get_userCreateTime(u));
-            int n = sizeof(List);
-            memcpy(&wanted_rides[j],&l,sizeof(List));
-            printf("%s\n",get_ListDriverName(wanted_rides[j]));
-            //printf("N->%d\n",j);
-            //printf("%d D->> %s U->>%s D->%d/%d/%d U->%d/%d/%d \n",get_ListDriverID(l),get_ListDriverName(l),get_ListUserName(l),get_ListAccAge_driver(l).tm_mday,get_ListAccAge_driver(l).tm_mon,get_ListAccAge_driver(l).tm_year,get_ListAccAge_user(l).tm_mday,get_ListAccAge_user(l).tm_mon,get_ListAccAge_user(l).tm_year);
+            g_hash_table_insert(list_rides, GINT_TO_POINTER(j) ,clone_list(l));
             //sprintf(ptr,"%d D->> %s U->>%s D->%d/%d/%d U->%d/%d/%d \n",get_ListDriverID(l),get_ListDriverName(l),get_ListUserName(l),get_ListAccAge_driver(l).tm_mday,get_ListAccAge_driver(l).tm_mon,get_ListAccAge_driver(l).tm_year,get_ListAccAge_user(l).tm_mday,get_ListAccAge_user(l).tm_mon,get_ListAccAge_user(l).tm_year);
-            free(l);   
-            j++;     
+            j++;
         }
     }
-    printf("%s\n",get_ListDriverName(wanted_rides[1]));
-    printf("%s\n",get_ListDriverName(wanted_rides[2]));
-    printf("%s\n",get_ListDriverName(wanted_rides[3]));
 
-    //qsort(wanted_rides,j,sizeof(List),compareWantedRides);
+    List *aux = malloc(sizeof(List) * g_hash_table_size(list_rides));
+    for(int k=0;k<j;k++){
+        struct list *temp = g_hash_table_lookup(list_rides,GINT_TO_POINTER(k));
+        aux[k]= temp;
+    }
+
+    qsort(aux,g_hash_table_size(list_rides),sizeof(List),compareWantedRides);
+
+
+    // id_condutor;nome_condutor;username_utilizador;nome_utilizador
+
+    for(int k=0;k<j;k++){
+        char* ptr = malloc(sizeof(float));
+        sprintf(ptr,"%d %s %s %s\n",get_ListDriverID(aux[k]),get_ListDriverName(aux[k]),get_ListUserUsername(aux[k]),get_ListUserName(aux[k]));
+        file_writer(filepointer,ptr);
+        free(ptr);
+    }
 }
+
 /*
 }
 void listDrivers(char *input,int N,char* filepointer){
