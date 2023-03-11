@@ -1,7 +1,7 @@
 # Compilador
 CC = gcc
 
-CFLAGS= -std=gnu99 -Wall -O2 -lm $(shell pkg-config --cflags glib-2.0)
+CFLAGS= -Wall -O3 -lm $(shell pkg-config --cflags glib-2.0)
 CFLAGS_T = --std=gnu99 -Wall -O2 
 
 LDFLAGS=$(shell pkg-config --libs glib-2.0) 
@@ -28,26 +28,23 @@ rides.o: $(SRC_DIR)/rides.c $(INC_DIR)/rides.h
 parse_func.o: $(SRC_DIR)/parse_func.c $(INC_DIR)/parse_func.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/parse_func.o -c $(SRC_DIR)/parse_func.c $(LDFLAGS)
 
-interface_func.o: $(SRC_DIR)/interface_func.c $(INC_DIR)/interface_func.h
-	$(CC) $(CFLAGS) -o $(SRC_DIR)/interface_func.o -c $(SRC_DIR)/interface_func.c $(LDFLAGS)
-
 user_interface.o: $(SRC_DIR)/user_interface.c $(INC_DIR)/user_interface.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/user_interface.o -c $(SRC_DIR)/user_interface.c $(LDFLAGS)
 
 interpreter.o: $(SRC_DIR)/interpreter.c $(INC_DIR)/interpreter.h
 	$(CC) $(CFLAGS) -o $(SRC_DIR)/interpreter.o -c $(SRC_DIR)/interpreter.c $(LDFLAGS)
 
-profile.o: $(SRC_DIR)/profile.c $(INC_DIR)/profile.h
-	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/profile.o -c $(SRC_DIR)/profile.c $(LDFLAGS)
+querie_aux.o: $(SRC_DIR)/querie_aux.c $(INC_DIR)/querie_aux.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/querie_aux.o -c $(SRC_DIR)/querie_aux.c $(LDFLAGS)
 
-rideAvr.o: $(SRC_DIR)/rideAvr.c $(INC_DIR)/rideAvr.h
-	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/rideAvr.o -c $(SRC_DIR)/rideAvr.c $(LDFLAGS)
+queries_itr.o: $(SRC_DIR)/queries_itr.c $(INC_DIR)/queries_itr.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/queries_itr.o -c $(SRC_DIR)/queries_itr.c $(LDFLAGS)
 
-list.o: $(SRC_DIR)/list.c $(INC_DIR)/list.h
-	$(COMPILER) $(CFLAGS) -o $(SRC_DIR)/list.o -c $(SRC_DIR)/list.c $(LDFLAGS)
+queries.o: $(SRC_DIR)/queries.c $(INC_DIR)/queries.h
+	$(CC) $(CFLAGS) -o $(SRC_DIR)/queries.o -c $(SRC_DIR)/queries.c $(LDFLAGS)
 
-programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interface_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o
-	$(CC) $(CFLAGS) $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/interface_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/profile.o $(SRC_DIR)/rideAvr.o $(SRC_DIR)/list.o -o ./programa-principal $(LDFLAGS)
+programa-principal: $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/querie_aux.o $(SRC_DIR)/queries.o $(SRC_DIR)/queries_itr.o  
+	$(CC) -o ./programa-principal $(SRC_DIR)/main.o $(SRC_DIR)/users.o $(SRC_DIR)/drivers.o $(SRC_DIR)/rides.o $(SRC_DIR)/parse_func.o $(SRC_DIR)/user_interface.o $(SRC_DIR)/interpreter.o $(SRC_DIR)/queries.o $(SRC_DIR)/querie_aux.o $(SRC_DIR)/queries_itr.o $(LDFLAGS) $(CFLAGS)
 
 
 memcheck:

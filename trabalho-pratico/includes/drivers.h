@@ -39,8 +39,13 @@ char *get_Class(Driver d);
 struct tm get_driverCreateTime(Driver d);
 GHashTable *drivers(char* line,int num_lines[],char* path);
 int validateIdDriver(char *field,Driver d);
-int validateDateDriver(char* field, Driver d, int N);
-
-
+double get_driverTotalAuferido(Driver d);
+int get_driverNumViagens(Driver d);
+double get_driverAvalTotal(Driver d);
+double get_driverAvalMedia(Driver d);
+double get_driverTotalAuferido(Driver d);
+struct tm get_driverLastRide(Driver d);
+void set_driverInfo(Driver d, double avaliacao,double auferido,struct tm lastRide);
+void hashToListDriver(gpointer key, gpointer value, gpointer list);
 #endif
 
